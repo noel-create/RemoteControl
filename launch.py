@@ -1,6 +1,7 @@
 import os
 import subprocess
 import sys
+import time
 
 required_packages = [
     'flask', 'flask-socketio', 'opencv-python-headless', 'numpy', 'mss',
@@ -20,6 +21,8 @@ def install_packages():
 
 # Call the function to install packages
 install_packages()
+
+time.sleep(3)
 
 import requests
 import zipfile
