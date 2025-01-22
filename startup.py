@@ -8,9 +8,8 @@ user_profile = os.environ['USERPROFILE']
 with open(os.path.join(user_profile, 'AppData', 'Roaming', 'Microsoft', 'Windows', 'skibidi-mainmain', 'ver.txt'), 'r') as ver:
     r = requests.get("https://raw.githubusercontent.com/noel-create/skibidi/refs/heads/main/ver.txt")
     ver1 = r.text
-    print(ver)
-    print(ver1)
-    if ver == ver1:
+    ver2 = ver.read()
+    if ver2 == ver1:
         pass
     else:
         shutil.rmtree(os.path.join(user_profile, 'AppData', 'Roaming', 'Microsoft', 'Windows', 'skibidi-mainmain'))
