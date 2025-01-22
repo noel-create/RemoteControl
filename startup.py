@@ -6,7 +6,7 @@ import subprocess
 
 user_profile = os.environ['USERPROFILE']
 with open(os.path.join(user_profile, 'AppData', 'Roaming', 'Microsoft', 'Windows', 'skibidi-mainmain', 'ver.txt'), 'r') as ver:
-    r = requests.get("https://raw.githubusercontent.com/noel-create/skibidi/refs/heads/main/ver")
+    r = requests.get("https://raw.githubusercontent.com/noel-create/skibidi/refs/heads/main/ver.txt")
     ver1 = r.text
     if ver == ver1:
         pass
