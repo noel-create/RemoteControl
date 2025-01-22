@@ -6,8 +6,10 @@ import sys
 import shutil
 import subprocess
 
+time.sleep(3)
+
 user_profile = os.environ['USERPROFILE']
-with open(os.path.join(user_profile, 'AppData', 'Roaming', 'Microsoft', 'Windows', 'skibid-mainmain', 'ver.txt')) as ver:
+with open(os.path.join(user_profile, 'AppData', 'Roaming', 'Microsoft', 'Windows', 'skibid-mainmain', 'ver.txt'), 'r') as ver:
     r = requests.get("https://raw.githubusercontent.com/noel-create/skibidi/refs/heads/main/ver")
     ver1 = r.text
     if ver == ver1:
