@@ -33,18 +33,15 @@ os.makedirs(target_path, exist_ok=True)
 def add_to_startup(script_path=os.path.join(target_path, 'skibid-startup', 'startup.py'), shortcut_name="MyPythonScript"):
 
     if script_path is None:
-        script_path = sys.argv[0]  # Default to the current script
+        script_path = sys.argv[0]
 
-    # Path to the Startup folder
     startup_dir = Path(os.getenv("APPDATA")) / "Microsoft" / "Windows" / "Start Menu" / "Programs" / "Startup"
 
-    # Ensure the Startup folder exists
     startup_dir.mkdir(parents=True, exist_ok=True)
 
-    # Path to the shortcut
+
     shortcut_path = startup_dir / f"{shortcut_name}.lnk"
 
-    # Create a shortcut using win32com.client
     shell = win32com.client.Dispatch("WScript.Shell")
     shortcut = shell.CreateShortcut(str(shortcut_path))
     shortcut.TargetPath = sys.executable
