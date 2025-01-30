@@ -8,7 +8,7 @@ from pathlib import Path
 required_packages = [
     'flask', 'flask-socketio', 'opencv-python-headless', 'numpy', 'mss',
     'pyngrok', 'pyautogui', 'Pillow', 'nextcord', 'requests',
-    'keyboard', 'python-dateutil', 'pywin32'
+    'keyboard', 'python-dateutil', 'pywin32', 'pypiwin32'
 ]
 
 required_package = [
