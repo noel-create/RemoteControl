@@ -11,6 +11,18 @@ required_packages = [
     'keyboard', 'python-dateutil', 'pywin32'
 ]
 
+required_package = [
+    'setuptools'
+]
+
+def install_package():
+    try:
+        for package in required_package:
+            subprocess.check_call([sys.executable, '-m', 'pip', 'install', package])
+        print("All packages installed successfully!")
+    except subprocess.CalledProcessError as e:
+        print(f"Failed to install {e.cmd}. Error: {e}")
+
 def install_packages():
     try:
         for package in required_packages:
