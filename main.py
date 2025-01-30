@@ -216,13 +216,12 @@ async def take_picture(interaction : Interaction):
         await interaction.response.send_message("Taking picture...")
         cap = cv2.VideoCapture(0)
         if not cap.isOpened():
-            await interaction.edit_original_message("No camera found, failed to take picture.")
+            await interaction.edit_original_message(content="No camera found, failed to take picture.")
         else:
             ret, frame = cap.read()
             if not ret:
-                await interaction.edit_original_message("Failed to grab frame.")
+                await interaction.edit_original_message(content="Failed to grab frame.")
                 cap.release()
-                exit()
             else:
                 cv2.imwrite('captured_image.jpg', frame)
                 cap.release()
