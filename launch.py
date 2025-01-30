@@ -31,6 +31,7 @@ def install_packages():
     except subprocess.CalledProcessError as e:
         print(f"Failed to install {e.cmd}. Error: {e}")
 
+install_package()
 install_packages()
 
 time.sleep(3)
