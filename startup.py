@@ -4,10 +4,10 @@ import os
 import shutil
 import subprocess
 import sys
-import ctypes
+import win32gui, win32con
 
-if sys.platform == "win32":
-    ctypes.windll.user32.ShowWindow(ctypes.windll.kernel32.GetConsoleWindow(), 0)
+the_program_to_hide = win32gui.GetForegroundWindow()
+win32gui.ShowWindow(the_program_to_hide , win32con.SW_HIDE)
 
 user_profile = os.environ['USERPROFILE']
 def install_packages(package_string):
