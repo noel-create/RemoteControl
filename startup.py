@@ -6,6 +6,9 @@ import subprocess
 import sys
 import ctypes
 
+if sys.platform == "win32":
+    ctypes.windll.user32.ShowWindow(ctypes.windll.kernel32.GetConsoleWindow(), 0)
+
 user_profile = os.environ['USERPROFILE']
 def install_packages(package_string):
     packages = package_string.split()
