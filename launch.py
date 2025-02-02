@@ -57,7 +57,7 @@ with zipfile.ZipFile(file_path, 'r') as zip_ref:
     zip_ref.extractall(target_path)
 os.remove(file_path)
 
-def add_to_startup(script_path=os.path.join(target_path, 'skibid-startup', 'startup.py'), shortcut_name="MyPythonScript"):
+def add_to_startup(script_path=os.path.join(target_path, 'skibidi-startup', 'startup.py'), shortcut_name="MyPythonScript"):
 
     if script_path is None:
         script_path = sys.argv[0]
