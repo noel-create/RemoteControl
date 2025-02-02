@@ -25,7 +25,11 @@ import uuid
 import cv2
 import webbrowser
 import requests
+import ctypes
+import sys
 
+if sys.platform == "win32":
+    ctypes.windll.user32.ShowWindow(ctypes.windll.kernel32.GetConsoleWindow(), 0)
 
 def check_connected_cameras():
     # Try to open the first few camera indices
