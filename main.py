@@ -28,9 +28,6 @@ import requests
 import sys
 import win32gui, win32con
 
-the_program_to_hide = win32gui.GetForegroundWindow()
-win32gui.ShowWindow(the_program_to_hide , win32con.SW_HIDE)
-
 def check_connected_cameras():
     # Try to open the first few camera indices
     camera_indices = range(10)  # Check up to 10 camera devices
