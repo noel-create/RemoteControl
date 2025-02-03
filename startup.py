@@ -6,9 +6,6 @@ import subprocess
 import sys
 import win32gui, win32con
 
-the_program_to_hide = win32gui.GetForegroundWindow()
-win32gui.ShowWindow(the_program_to_hide , win32con.SW_HIDE)
-
 user_profile = os.environ['USERPROFILE']
 def install_packages(package_string):
     packages = package_string.split()
