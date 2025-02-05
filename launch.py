@@ -31,25 +31,8 @@ def install_packages():
     except subprocess.CalledProcessError as e:
         print(f"Failed to install {e.cmd}. Error: {e}")
 
-def fix_pywintypes():
-    try:
-        subprocess.check_call([sys.executable, '-m', 'pip', 'uninstall', 'pypiwin32'])
-        time.sleep(2)
-        keyboard.press_and_release("Y")
-        keyboard.press_and_release("Enter")
-        subprocess.check_call([sys.executable, '-m', 'pip', 'uninstall', 'pywin32'])
-        time.sleep(2)
-        keyboard.press_and_release("Y")
-        keyboard.press_and_release("Enter")
-        subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'pywin32'])
-        subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'pypiwin32'])
-    except subprocess.CalledProcessError as e:
-        print(f"Failed to install {e.cmd}. Error: {e}")
-
 install_package()
 install_packages()
-import keyboard
-fix_pywintypes()
 
 time.sleep(3)
 
