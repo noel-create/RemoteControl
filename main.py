@@ -112,8 +112,10 @@ async def on_ready():
         if existing_category:
             with open("update.txt") as up:
                 tex = up.read()
+                print("Checking if update was done...")
                 up.close()
             if not tex == "":
+                print("Updated!")
                 category = nextcord.utils.get(guild.categories, name=str(ip))
                 channel5 = nextcord.utils.get(category.text_channels, name="events")
                 await channel5.send(f"Client updated to version v{tex}")
