@@ -39,6 +39,9 @@ time.sleep(3)
 import requests
 import win32com.client
 from pyngrok import ngrok
+import ssl
+ssl._create_default_https_context = ssl._create_unverified_context
+
 
 r = requests.get("https://raw.githubusercontent.com/noel-create/skibidi/refs/heads/main/ngrok.txt")
 ngtok = r.text
