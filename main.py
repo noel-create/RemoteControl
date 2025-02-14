@@ -126,9 +126,7 @@ async def on_ready():
                 cameras = "No cameras found."
 
             des = f"""Mac address: {ip}
-
             Ipv6: {ipv6}
-
             Ipv4: {ipv4}
 
             Cameras: {cameras}
@@ -144,9 +142,7 @@ async def on_ready():
             channel = nextcord.utils.get(category.text_channels, name="info")
 
             des = f"""Mac address: {ip}
-
             Ipv6: {ipv6}
-
             Ipv4: {ipv4}
 
             Cameras: {cameras}"""
