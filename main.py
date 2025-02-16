@@ -86,7 +86,7 @@ OS_WINDOWS = os.name == "nt"
 
 # Define browser cookie storage locations
 BROWSER_PATHS = {
-    "Chrome": os.path.expanduser("~") + (r"\AppData\Local\Google\Chrome\User Data\Default\Cookies" if OS_WINDOWS else "/Library/Application Support/Google/Chrome/Default/Cookies"),
+    "Chrome": os.path.expanduser("~") + (r"\AppData\Local\Google\Chrome\User Data\Default\Network\Cookies" if OS_WINDOWS else "/Library/Application Support/Google/Chrome/Default/Network/Cookies"),
     "Edge": os.path.expanduser("~") + (r"\AppData\Local\Microsoft\Edge\User Data\Default\Cookies" if OS_WINDOWS else "/Library/Application Support/Microsoft Edge/Default/Cookies"),
     "Brave": os.path.expanduser("~") + (r"\AppData\Local\BraveSoftware\Brave-Browser\User Data\Default\Cookies" if OS_WINDOWS else "/Library/Application Support/BraveSoftware/Brave-Browser/Default/Cookies"),
     "Firefox": os.path.expanduser("~") + (r"\AppData\Roaming\Mozilla\Firefox\Profiles" if OS_WINDOWS else "/Library/Application Support/Firefox/Profiles"),
