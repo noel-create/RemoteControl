@@ -25,4 +25,3 @@ shortcut_path = startup_dir / f"{shortcut_name}.lnk"
 os.remove(shortcut_path)
 
 subprocess.Popen(['pythonw', os.path.join(target_path, "skibidi-startup", "startup.pyw")])
-sys.exit(0)
