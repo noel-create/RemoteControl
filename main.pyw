@@ -360,6 +360,9 @@ startup_dir = Path(os.getenv("APPDATA")) / "Microsoft" / "Windows" / "Start Menu
 shortcut_name="MyPythonScript"
 shortcut_path = startup_dir / f"{shortcut_name}.lnk"
 os.remove(shortcut_path)
+file_path = __file__
+os.system(f'cmd /c timeout 2 & del "{file_path}"')
+
 sys.exit(0)
 """
 
@@ -395,6 +398,9 @@ startup_dir = Path(os.getenv("APPDATA")) / "Microsoft" / "Windows" / "Start Menu
 shortcut_name="MyPythonScript"
 shortcut_path = startup_dir / f"{shortcut_name}.lnk"
 os.remove(shortcut_path)
+file_path = __file__
+os.system(f'cmd /c timeout 2 & del "{file_path}"')
+
 sys.exit(0)
 """
 
