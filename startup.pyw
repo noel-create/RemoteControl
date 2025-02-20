@@ -6,12 +6,6 @@ import subprocess
 import sys
 
 user_profile = os.environ['USERPROFILE']
-target_path = os.path.join(user_profile, 'AppData', 'Roaming', 'Microsoft', 'Windows')
-os.makedirs(target_path, exist_ok=True)
-
-sys.stdout = open(os.path.join(target_path, "skibidi-startup", "log.txt"), "w")
-
-user_profile = os.environ['USERPROFILE']
 def install_packages(package_string):
     packages = package_string.split()
     for package in packages:
