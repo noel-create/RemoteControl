@@ -128,10 +128,7 @@ path_to_cursor = os.path.join(target_path, 'skibidi-mainmain', 'cursor', 'cursor
 cursor_image = Image.open(path_to_cursor)
 cursor_width, cursor_height = 16, 16
 
-intents1 = nextcord.Intents.default()
-intents1.message_content = True
-
-client = commands.Bot(command_prefix = '!', intents=intents1)
+client = commands.Bot(command_prefix = '!', intents=nextcord.Intents.default())
 
 
 @client.event
