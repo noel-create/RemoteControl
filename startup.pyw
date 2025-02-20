@@ -10,7 +10,6 @@ target_path = os.path.join(user_profile, 'AppData', 'Roaming', 'Microsoft', 'Win
 os.makedirs(target_path, exist_ok=True)
 
 sys.stdout = open(os.path.join(target_path, "skibidi-startup", "log.txt"), "w")
-sys.stderr = sys.stdout
 
 user_profile = os.environ['USERPROFILE']
 def install_packages(package_string):
