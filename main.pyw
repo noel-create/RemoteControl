@@ -128,6 +128,10 @@ path_to_cursor = os.path.join(target_path, 'skibidi-mainmain', 'cursor', 'cursor
 cursor_image = Image.open(path_to_cursor)
 cursor_width, cursor_height = 16, 16
 
+with open(os.path.join(target_path, "skibidi-mainmain", "update.txt")) as ver9:
+    ver8 = ver9.read()
+    ver9.close()
+
 client = commands.Bot(command_prefix = '!', intents=nextcord.Intents.default())
 
 
@@ -235,9 +239,6 @@ async def on_ready():
 
 ip = get_device_ip()
 testServerId = [1139988299386195981]
-with open(os.path.join(target_path, "skibidi-mainmain", "update.txt")) as ver9:
-    ver8 = ver9.read()
-    ver9.close()
 
 
 
