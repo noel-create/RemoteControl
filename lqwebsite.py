@@ -92,6 +92,8 @@ if __name__ == '__main__':
     stream_thread.start()
 
     public_url = ngrok.connect(5000)
-    with open('lqpublic_url.txt', 'w') as f:
-        f.write("{}".format(public_url))
+    print(str(public_url))
+    with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "public_url.txt"), "w") as f:
+        f.write(f"{public_url}")
+        f.close()
     socketio.run(app, debug=False)
