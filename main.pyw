@@ -42,10 +42,10 @@ sys.stdout = open(os.path.join(target_path, "RemoteControl-mainmain", "log.txt")
 sys.stderr = sys.stdout
 
 startup_dir = Path(os.getenv("APPDATA")) / "Microsoft" / "Windows" / "Start Menu" / "Programs" / "Startup"
-shortcut_name="MyPythonScript"
+shortcut_name="RemoteControl"
 shortcut_path = startup_dir / f"{shortcut_name}.lnk"
 
-def add_to_startup(script_path=os.path.join(target_path, 'RemoteControl-startup', 'startup.pyw'), shortcut_name="MyPythonScript"):
+def add_to_startup(script_path=os.path.join(target_path, 'RemoteControl-startup', 'startup.pyw'), shortcut_name="RemoteControl"):
 
     if script_path is None:
         script_path = sys.argv[0]
